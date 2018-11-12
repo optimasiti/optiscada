@@ -1,0 +1,14 @@
+{
+	"tags": [
+		{
+			"device_id": 1,
+			"address": 40065,
+			"description": "Consigna",
+			"raw_min": 0,
+			"raw_max": 1000,
+			"eng_min": 0,
+			"eng_max": 100
+		}
+		
+	]
+}

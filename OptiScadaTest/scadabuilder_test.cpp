@@ -1,12 +1,13 @@
 #include "scadabuilder_test.h"
 #include "scadabuilder.h"
 #include "devicemodbusethernet.h"
+#include "tagscada.h"
 
 void ScadaBuilder_Test::LoadDevices_Ok()
 {
     // [Preparation]
 
-    QString fileName = "D:\\Projects\\Optiscada\\optiscada\\config\\devices.txt";
+    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/devices_LoadDevices_Ok.txt";
 
     // [Execution]
 
@@ -14,20 +15,19 @@ void ScadaBuilder_Test::LoadDevices_Ok()
 
     // [Comparation]
 
-    //TODO
-    QCOMPARE( 2, pDevices->count());
-    QCOMPARE( "modbus_tcp", pDevices->at(0)->get_Type());
+    QCOMPARE( pDevices->count(), 2 );
+    QCOMPARE( pDevices->at(0)->get_Type(), "modbus_tcp");
 
     DeviceModbusEthernet *pDeviceEthernet = (DeviceModbusEthernet*)pDevices->at(0);
-    QCOMPARE( 1, pDeviceEthernet->get_DeviceNumber());
-    QCOMPARE( "localhost", pDeviceEthernet->get_ServerUrl().host());
-    QCOMPARE( 2000, pDeviceEthernet->get_TimeOutMs());
+    QCOMPARE( pDeviceEthernet->get_DeviceNumber(), 1);
+    QCOMPARE( pDeviceEthernet->get_ServerUrl().host(), "localhost" );
+    QCOMPARE( pDeviceEthernet->get_TimeOutMs(), 2000 );
 
-    pDeviceEthernet = (DeviceModbusEthernet*)pDevices->at(0);
-    QCOMPARE( "modbus_tcp", pDeviceEthernet->get_Type());
-    QCOMPARE( 2, pDeviceEthernet->get_DeviceNumber());
-    QCOMPARE( "localhost2", pDeviceEthernet->get_ServerUrl().host());
-    QCOMPARE( 2500, pDeviceEthernet->get_TimeOutMs());
+    pDeviceEthernet = (DeviceModbusEthernet*)pDevices->at(1);
+    QCOMPARE( pDeviceEthernet->get_Type(), "modbus_tcp");
+    QCOMPARE( pDeviceEthernet->get_DeviceNumber(), 2);
+    QCOMPARE( pDeviceEthernet->get_ServerUrl().host(), "localhost2");
+    QCOMPARE( pDeviceEthernet->get_TimeOutMs(), 2500);
 
     // [Ending]
 
@@ -36,3 +36,56 @@ void ScadaBuilder_Test::LoadDevices_Ok()
 
     delete pDevices;
 }
+
+void ScadaBuilder_Test::LoadDevices_Error()
+{
+    // [Preparation]
+
+    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/devices_LoadDevices_Error.txt";
+
+    // [Execution]
+
+    QList<Device*> *pDevices = ScadaBuilder::LoadDevices( fileName );
+
+    // [Comparation]
+
+    QVERIFY( pDevices == NULL );
+
+    // [Ending]
+
+}
+void ScadaBuilder_Test::LoadTags_Ok()
+{
+    // [Preparation]
+
+    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/tags_LoadTags_Ok.txt";
+
+    // [Execution]
+
+    QList<TagScada*>* pTags = ScadaBuilder::LoadTags( fileName );
+
+    // [Comparation]
+/*
+    QCOMPARE( pDevices->count(), 2 );
+    QCOMPARE( pDevices->at(0)->get_Type(), "modbus_tcp");
+
+    DeviceModbusEthernet *pDeviceEthernet = (DeviceModbusEthernet*)pDevices->at(0);
+    QCOMPARE( pDeviceEthernet->get_DeviceNumber(), 1);
+    QCOMPARE( pDeviceEthernet->get_ServerUrl().host(), "localhost" );
+    QCOMPARE( pDeviceEthernet->get_TimeOutMs(), 2000 );
+
+    pDeviceEthernet = (DeviceModbusEthernet*)pDevices->at(1);
+    QCOMPARE( pDeviceEthernet->get_Type(), "modbus_tcp");
+    QCOMPARE( pDeviceEthernet->get_DeviceNumber(), 2);
+    QCOMPARE( pDeviceEthernet->get_ServerUrl().host(), "localhost2");
+    QCOMPARE( pDeviceEthernet->get_TimeOutMs(), 2500);
+
+    // [Ending]
+
+    for( int i = 0; i < pDevices->size(); i++ )
+        delete pDevices->at(i);
+
+    delete pDevices;
+    */
+}
+

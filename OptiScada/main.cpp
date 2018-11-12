@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 
     QList<TagScada*> tags;
 
-    for( int i = 0; i < scadaCore.get_Tags().size(); i++ )
-        tags.append( scadaCore.get_Tags().at(i));
+    for( int i = 0; i < scadaCore.get_Tags()->size(); i++ )
+        tags.append( scadaCore.get_Tags()->at(i));
 
     MainWindow w( tags );
     w.show();

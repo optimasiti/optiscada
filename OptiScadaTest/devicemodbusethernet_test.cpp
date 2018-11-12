@@ -51,7 +51,7 @@ void DeviceModbusEthernet_Test::ReadHoldingRegisters_Ok()
 
     pDevice->ReadWords( tagAddress, count, readValues );
 
-    QCOMPARE( tagValue, readValues.first() );
+    QCOMPARE( readValues.first(), tagValue );
 
     // [Ending]
 
@@ -119,7 +119,7 @@ void DeviceModbusEthernet_Test::ReadInputRegisters_Ok()
 
     pDevice->ReadWords( tagAddress, count, readValues );
 
-    QCOMPARE( tagValue, readValues.first() );
+    QCOMPARE( readValues.first(), tagValue );
 
     // [Ending]
 
@@ -188,7 +188,7 @@ void DeviceModbusEthernet_Test::ReadDiscreteInputs_Ok()
 
     pDevice->ReadBits( tagAddress, count, readValues );
 
-    QCOMPARE( tagValue, readValues.first() );
+    QCOMPARE( readValues.first(), tagValue );
 
     // [Ending]
 
@@ -257,7 +257,7 @@ void DeviceModbusEthernet_Test::ReadCoils_Ok()
 
     pDevice->ReadBits( tagAddress, count, readValues );
 
-    QCOMPARE( tagValue, readValues.first() );
+    QCOMPARE( readValues.first(), tagValue );
 
     // [Ending]
 
@@ -326,7 +326,7 @@ void DeviceModbusEthernet_Test::WriteHoldingRegisters_Ok()
 
     quint16 readValues = pServer->GetRegisterValue( tagAddress );
 
-    QCOMPARE( tagValue, readValues );
+    QCOMPARE( readValues, tagValue );
 
     // [Ending]
 
@@ -394,7 +394,7 @@ void DeviceModbusEthernet_Test::WriteCoils_Ok()
 
     bool readValues = pServer->GetRegisterValue( tagAddress );
 
-    QCOMPARE( tagValue, readValues );
+    QCOMPARE( readValues, tagValue );
 
     // [Ending]
 
