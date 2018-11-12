@@ -8,7 +8,7 @@ class Device;
 class ScadaBuilder
 {
 public:
-    static QList<Device*> *LoadDevices();
+    static QList<Device*> *LoadDevices( QString fileName );
 
 private:
     static const QString NotFoundString;
