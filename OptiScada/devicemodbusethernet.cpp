@@ -14,6 +14,22 @@
 const int DeviceModbusEthernet::NumberOfRetries = 0;
 const int DeviceModbusEthernet::MaxReadCount = 20;
 
+QUrl DeviceModbusEthernet::get_ServerUrl()
+{
+    return m_ServerUrl;
+}
+
+int DeviceModbusEthernet::get_TimeOutMs()
+{
+    return m_TimeOutMs;
+}
+
+int DeviceModbusEthernet::get_DeviceNumber()
+{
+    return m_pMemory->get_DeviceNumber();
+}
+
+
 DeviceModbusEthernet::DeviceModbusEthernet( int deviceNumber, QUrl serverUrl, int timeOutMs ):
     m_ServerUrl( serverUrl ),
     m_TimeOutMs( timeOutMs )
@@ -21,6 +37,7 @@ DeviceModbusEthernet::DeviceModbusEthernet( int deviceNumber, QUrl serverUrl, in
     m_pMemory = new ModbusMemory( deviceNumber );
     m_pModbusClient = nullptr;
     m_Finish = false;
+    m_Type = "modbus_tcp";
 }
 
 DeviceModbusEthernet::~DeviceModbusEthernet()

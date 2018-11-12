@@ -2,6 +2,7 @@
 #define SCADABUILDER_H
 
 #include <QList>
+#include <QJsonObject>
 
 class Device;
 

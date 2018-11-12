@@ -17,6 +17,10 @@ class DeviceModbusEthernet : public Device
     Q_OBJECT
 
 public:
+    QUrl get_ServerUrl();
+    int get_TimeOutMs();
+    int get_DeviceNumber();
+
     DeviceModbusEthernet( int deviceNumber, QUrl serverUrl, int timeOutMs );
     virtual ~DeviceModbusEthernet();
 

@@ -8,6 +8,8 @@ class Device : public QObject
 {
     Q_OBJECT
 public:
+    QString get_Type();
+
     virtual bool ReadWords( int startAddress, int count, QVector<quint16> &readValues ) = 0;
     virtual bool ReadBits( int startAddress, int count, QVector<bool> &readValues ) = 0;
     virtual void WriteWords( int startAddress, QVector<quint16> values ) = 0;
@@ -18,6 +20,8 @@ public slots:
     void update();
 
 protected:
+    QString m_Type;
+
     virtual void UpdateMemory() = 0;
 };
 

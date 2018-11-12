@@ -4,8 +4,8 @@
 
 #include <QJsonDocument>
 #include <QJsonArray>
-#include <QJsonObject>
 #include <QJsonValue>
+#include <QFile>
 
 const QString ScadaBuilder::NotFoundString = "NOT_FOUND";
 
@@ -51,6 +51,8 @@ QList<Device*> *ScadaBuilder::LoadDevices( QString fileName )
             return NULL; //TODO
         }
     }
+
+    return pDevices;
 }
 
 Device* ScadaBuilder::LoadModbusEthernetDevice( QJsonObject device )
@@ -76,7 +78,7 @@ Device* ScadaBuilder::LoadModbusEthernetDevice( QJsonObject device )
         return NULL;
     }
 
-    int timeOutMs = device.value("id").toInt(2000);//TODO a K
+    int timeOutMs = device.value("time_out_ms").toInt(2000);//TODO a K
 
     return new DeviceModbusEthernet( deviceNumber, QString("%1:%2").arg(slave).arg(port), timeOutMs);
 }
