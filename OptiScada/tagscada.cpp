@@ -1,11 +1,17 @@
 #include "tagscada.h"
 
+int TagScada::get_Id()
+{
+    return m_Id;
+}
+
 QString TagScada::get_Name()
 {
     return m_Name;
 }
 
-TagScada::TagScada( QString name, int address, Device *pDevice ):
+TagScada::TagScada( int id, QString name, int address, Device *pDevice ):
+    m_Id( id ),
     m_Name( name ),
     m_Address( address ),
     m_RawEng( false ),
@@ -14,7 +20,8 @@ TagScada::TagScada( QString name, int address, Device *pDevice ):
 }
 
 
-TagScada::TagScada( QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, Device *pDevice ):
+TagScada::TagScada( int id, QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, Device *pDevice ):
+    m_Id( id ),
     m_Name( name ),
     m_Address( address ),
     m_RawEng( true ),

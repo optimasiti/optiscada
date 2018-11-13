@@ -21,7 +21,7 @@ public:
     int get_TimeOutMs();
     int get_DeviceNumber();
 
-    DeviceModbusEthernet( int deviceNumber, QUrl serverUrl, int timeOutMs );
+    DeviceModbusEthernet( int deviceId, QUrl serverUrl, int timeOutMs );
     virtual ~DeviceModbusEthernet();
 
     void TouchAddress( int address );

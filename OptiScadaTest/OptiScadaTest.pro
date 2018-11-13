@@ -32,7 +32,8 @@ SOURCES +=  main.cpp \
             ../OptiScada/modbuscommon.cpp \
             ../OptiScada/log.cpp \
     scadabuilder_test.cpp \
-    ../OptiScada/scadabuilder.cpp
+    ../OptiScada/scadabuilder.cpp \
+    ../OptiScada/tagscada.cpp
 
 HEADERS +=  devicemodbusethernet_test.h \
             modbusserver.h \
@@ -43,4 +44,5 @@ HEADERS +=  devicemodbusethernet_test.h \
             ../OptiScada/modbuscommon.h \
             ../OptiScada/log.h \
     scadabuilder_test.h \
-    ../OptiScada/scadabuilder.h
+    ../OptiScada/scadabuilder.h \
+    ../OptiScada/tagscada.h

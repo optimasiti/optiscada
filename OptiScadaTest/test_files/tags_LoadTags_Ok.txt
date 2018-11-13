@@ -1,6 +1,7 @@
 {
 	"tags": [
 		{
+			"id": 1,
 			"device_id": 1,
 			"address": 40065,
 			"description": "Consigna",

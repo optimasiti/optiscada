@@ -8,10 +8,11 @@
 class TagScada
 {
 public:
+    int get_Id();
     QString get_Name();
 
-    TagScada( QString name, int address, Device *pDevice );
-    TagScada( QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, Device *pDevice );
+    TagScada( int id, QString name, int address, Device *pDevice );
+    TagScada( int id, QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, Device *pDevice );
 
     bool GetValue( quint16 &value );
     void SetValue( quint16 value );
@@ -21,6 +22,7 @@ public:
     void SetValue( double value );
 
 private:
+    int m_Id;
     QString m_Name;
     int m_Address;
     bool m_RawEng;

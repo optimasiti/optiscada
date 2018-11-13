@@ -6,8 +6,8 @@
 #include "tagscada.h"
 #include "scadabuilder.h"
 
-const QString ScadaCore::DeviceFileName = "devices.txt";
-const QString ScadaCore::TagsFileName = "tags.txt";
+//const QString ScadaCore::DeviceFileName = "devices.txt";
+//const QString ScadaCore::TagsFileName = "tags.txt";
 
 QList<TagScada*>* ScadaCore::get_Tags()
 {
@@ -21,11 +21,12 @@ ScadaCore::ScadaCore()
 
 bool ScadaCore::Start() //TODO Destructor
 {
-    QString fileName = QDir::currentPath() + "/config/" + DeviceFileName;
-    m_pDevices = ScadaBuilder::LoadDevices( fileName );
+    QString fileName = QDir::currentPath() + "/config/";
 
-    fileName = QDir::currentPath() + "/config/" + TagsFileName;
-    m_pTags = ScadaBuilder::LoadTags( fileName );
+    if( !ScadaBuilder::BuildScada( fileName ) )
+    {
+        return false;
+    }
 
     /*
     int deviceNumber = 1;

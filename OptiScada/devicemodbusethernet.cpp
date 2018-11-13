@@ -30,11 +30,12 @@ int DeviceModbusEthernet::get_DeviceNumber()
 }
 
 
-DeviceModbusEthernet::DeviceModbusEthernet( int deviceNumber, QUrl serverUrl, int timeOutMs ):
+DeviceModbusEthernet::DeviceModbusEthernet( int deviceId, QUrl serverUrl, int timeOutMs ):
     m_ServerUrl( serverUrl ),
     m_TimeOutMs( timeOutMs )
 {
-    m_pMemory = new ModbusMemory( deviceNumber );
+    m_Id = deviceId;
+    m_pMemory = new ModbusMemory( deviceId );
     m_pModbusClient = nullptr;
     m_Finish = false;
     m_Type = "modbus_tcp";
