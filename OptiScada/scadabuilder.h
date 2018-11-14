@@ -10,7 +10,11 @@ class TagScada;
 class ScadaBuilder
 {
 public:
+    static QList<Device*> *get_Devices();
+    static QList<TagScada*> *get_Tags();
+
     static bool BuildScada( QString configPath );
+    static void ShutdownScada();
 
 private:
     static const QString NotFoundString;
@@ -18,12 +22,15 @@ private:
     static const int DefaultPort;
     static QList<Device*> *m_pDevices;
     static QList<TagScada*> *m_pTags;
+    static const QString DeviceFileName;
+    static const QString TagsFileName;
 
-    static QList<Device*> *LoadDevices( QString fileName );
-    static QList<TagScada*> *LoadTags( QString fileName );
+    static bool LoadDevices( QString fileName );
+    static bool LoadTags( QString fileName );
     static Device* LoadModbusEthernetDevice( QJsonObject device );
-    static TagScada* LoadTag( QJsonObject tag );
     static Device* FindDevice( int deviceId );
+    static void StartRefreshDevices();
+
 };
 
 #endif // SCADABUILDER_H

@@ -9,7 +9,9 @@ class Device : public QObject
     Q_OBJECT
 public:
     int get_Id();
-    QString get_Type();
+    int get_TimeOutMs();
+
+    Device( int deviceId, int timeOutMs );
 
     virtual bool ReadWords( int startAddress, int count, QVector<quint16> &readValues ) = 0;
     virtual bool ReadBits( int startAddress, int count, QVector<bool> &readValues ) = 0;
@@ -23,6 +25,7 @@ public slots:
 protected:
     int m_Id;
     QString m_Type;
+    int m_TimeOutMs;
 
     virtual void UpdateMemory() = 0;
 };

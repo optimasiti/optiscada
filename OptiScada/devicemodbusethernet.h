@@ -40,7 +40,6 @@ private:
     ModbusMemory *m_pMemory;
     QModbusTcpClient *m_pModbusClient;
     QUrl m_ServerUrl;
-    int m_TimeOutMs;
     QList<int> m_RefreshBlocks;
     QList<WriteCommand*> m_Writes;
     QMutex m_WritesMutex;

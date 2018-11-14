@@ -9,13 +9,8 @@ class ScadaBuilder_Test : public QObject
     Q_OBJECT
 
 private slots:
-/*
-    virtual void LoadDevices_Ok();
-    virtual void LoadDevices_Error();
-    virtual void LoadTags_Ok();
-    *
-    */
     virtual void BuildScada_Ok();
+    virtual void BuildScada_ErrorByDevices();
 };
 
 #endif // SCADABUILDER_TEST_H

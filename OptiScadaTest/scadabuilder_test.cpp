@@ -3,17 +3,14 @@
 #include "devicemodbusethernet.h"
 #include "tagscada.h"
 
+
+
+
 void ScadaBuilder_Test::BuildScada_Ok()
-{
-
-}
-
-/*
-void ScadaBuilder_Test::LoadDevices_Ok()
 {
     // [Preparation]
 
-    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/LoadDevices_Ok";
+    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/BuildScada_Ok";
 
     // [Execution]
 
@@ -21,57 +18,43 @@ void ScadaBuilder_Test::LoadDevices_Ok()
 
     // [Comparation]
 
-    QCOMPARE( pDevices->count(), 2 );
-    QCOMPARE( pDevices->at(0)->get_Type(), "modbus_tcp");
+    QCOMPARE( built, true );
 
-    DeviceModbusEthernet *pDeviceEthernet = (DeviceModbusEthernet*)pDevices->at(0);
+    QCOMPARE( ScadaBuilder::get_Devices()->size(), 2 );
+
+    DeviceModbusEthernet *pDeviceEthernet = (DeviceModbusEthernet*)ScadaBuilder::get_Devices()->at(0);
     QCOMPARE( pDeviceEthernet->get_DeviceNumber(), 1);
+    QCOMPARE( pDeviceEthernet->metaObject()->className(), "DeviceModbusEthernet" );
     QCOMPARE( pDeviceEthernet->get_ServerUrl().host(), "localhost" );
     QCOMPARE( pDeviceEthernet->get_TimeOutMs(), 2000 );
 
-    pDeviceEthernet = (DeviceModbusEthernet*)pDevices->at(1);
-    QCOMPARE( pDeviceEthernet->get_Type(), "modbus_tcp");
+    pDeviceEthernet = (DeviceModbusEthernet*)ScadaBuilder::get_Devices()->at(1);
+    QCOMPARE( pDeviceEthernet->metaObject()->className(), "DeviceModbusEthernet" );
     QCOMPARE( pDeviceEthernet->get_DeviceNumber(), 2);
     QCOMPARE( pDeviceEthernet->get_ServerUrl().host(), "localhost2");
     QCOMPARE( pDeviceEthernet->get_TimeOutMs(), 2500);
 
     // [Ending]
 
-    for( int i = 0; i < pDevices->size(); i++ )
-        delete pDevices->at(i);
-
-    delete pDevices;
-
+    ScadaBuilder::ShutdownScada();
 }
 
-void ScadaBuilder_Test::LoadDevices_Error()
+void ScadaBuilder_Test::BuildScada_ErrorByDevices()
 {
     // [Preparation]
 
-    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/devices_LoadDevices_Error.txt";
+    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/BuildScada _ErrorByDevices";
 
     // [Execution]
 
-    QList<Device*> *pDevices = ScadaBuilder::LoadDevices( fileName );
+    bool built = ScadaBuilder::BuildScada( fileName );
 
     // [Comparation]
 
-    QVERIFY( pDevices == NULL );
+    QCOMPARE( built, false );
 
     // [Ending]
 
+    ScadaBuilder::ShutdownScada();
 }
-void ScadaBuilder_Test::LoadTags_Ok()
-{
-    // [Preparation]
 
-    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/tags_LoadTags_Ok.txt";
-
-    // [Execution]
-
-    QList<TagScada*>* pTags = ScadaBuilder::LoadTags( fileName );
-
-    // [Comparation]
-
-}
-*/

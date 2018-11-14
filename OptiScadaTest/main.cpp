@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     DeviceModbusEthernet_Test deviceModbusEthernetTest;
     ScadaBuilder_Test scadaBuilderTest;
 
-    QTest::qExec(&deviceModbusEthernetTest);
+    //QTest::qExec(&deviceModbusEthernetTest);
     QTest::qExec(&scadaBuilderTest);
 
 }

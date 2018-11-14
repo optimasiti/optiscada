@@ -14,13 +14,12 @@ public:
     QList<TagScada*> *get_Tags();
 
     ScadaCore();
-    bool Start();
-private:
-    static const QString DeviceFileName;
-    static const QString TagsFileName;
+    ~ScadaCore();
 
-    QList<TagScada*> *m_pTags;
-    QList<Device*> *m_pDevices;
+    bool Start();
+
+private:
+    static const QString ConfigFolder;
 };
 
 #endif // SCADACORE_H

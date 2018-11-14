@@ -8,25 +8,67 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QFile>
+#include <QThread>
+#include <QDateTime>
+#include <QCoreApplication>
 
 const QString ScadaBuilder::NotFoundString = "";
 const int ScadaBuilder::DefaultTimeOutMs = 2000;
 const int ScadaBuilder::DefaultPort = 502;
+const QString ScadaBuilder::DeviceFileName = "devices.txt";
+const QString ScadaBuilder::TagsFileName = "tags.txt";
 
 QList<Device*> *ScadaBuilder::m_pDevices = new QList<Device*>();
 QList<TagScada*> *ScadaBuilder::m_pTags = new QList<TagScada*>();
 
+QList<Device*> *ScadaBuilder::get_Devices()
+{
+    return m_pDevices;
+}
 
+QList<TagScada*> *ScadaBuilder::get_Tags()
+{
+    return m_pTags;
+}
 
 bool ScadaBuilder::BuildScada( QString configPath )
 {
-    LoadDevices( configPath + "/devices.txt" );
-    LoadTags( configPath + "/tags.txt" );
+    if( LoadDevices( configPath + "/" + DeviceFileName ))
+    {
+        if( LoadTags( configPath + "/" + TagsFileName ) )
+        {
+            StartRefreshDevices();
+            return true;
+        }
+    }
 
-    return false; //TODO
+    return false;
 }
 
-QList<Device*> *ScadaBuilder::LoadDevices( QString fileName )
+void ScadaBuilder::ShutdownScada()
+{
+    for( int i = 0; i < m_pTags->size(); i++)
+        delete m_pTags->at(i);
+
+    delete m_pTags;
+
+    for( int i = 0; i < m_pDevices->size(); i++ )
+    {
+        m_pDevices->at(i)->Finish();
+
+        QDateTime ts = QDateTime::currentDateTime().addMSecs( m_pDevices->at(i)->get_TimeOutMs()*2);
+
+        while(QDateTime::currentDateTime() < ts )
+        {
+            QThread::usleep(50000);
+            QCoreApplication::processEvents();
+        }
+    }
+
+    delete m_pDevices;
+}
+
+bool ScadaBuilder::LoadDevices( QString fileName )
 {
     QString fileContent;
     QFile file;
@@ -42,7 +84,7 @@ QList<Device*> *ScadaBuilder::LoadDevices( QString fileName )
     if( devices.count() == 0)
     {
         Log::AddLog( Log::Critical, QString("No devices found in config file ") + fileName );
-        return nullptr;
+        return false;
     }
 
     foreach( device, devices )
@@ -52,7 +94,7 @@ QList<Device*> *ScadaBuilder::LoadDevices( QString fileName )
         if( deviceType == NotFoundString )
         {
             Log::AddLog( Log::Critical, QString("No device type found in config file ") + fileName );
-            return nullptr;
+            return false;
         }
 
         if( deviceType == "modbus_tcp" )
@@ -66,18 +108,15 @@ QList<Device*> *ScadaBuilder::LoadDevices( QString fileName )
         else
         {
             Log::AddLog( Log::Critical, QString("Unsupported device type %1 ").arg(deviceType) + QString(" in config file ") + fileName );
-            return nullptr;
+            return false;
         }
     }
 
-    return m_pDevices; //TODO
+    return true;
 }
 
-QList<TagScada*> *ScadaBuilder::LoadTags( QString fileName )
+bool ScadaBuilder::LoadTags( QString fileName )
 {
-
-    QList<TagScada*> *pTags = new QList<TagScada*>();
-
     QString fileContent;
     QFile file;
     file.setFileName( fileName );
@@ -92,7 +131,7 @@ QList<TagScada*> *ScadaBuilder::LoadTags( QString fileName )
     if( tags.count() == 0)
     {
         Log::AddLog( Log::Critical, QString("No tags found in config file ") + fileName );
-        return NULL; //TODO destruir. Tambien pasa en Devices.
+        return false;
     }
 
     foreach( tag, tags )
@@ -112,7 +151,7 @@ QList<TagScada*> *ScadaBuilder::LoadTags( QString fileName )
         if( pDevice == nullptr)
         {
             Log::AddLog( Log::Critical, QString( "Device %1 not found in config file %2").arg( deviceId ).arg( fileName ));
-            return nullptr; //TODO
+            return false;
         }
 
         if( rawMin != 0 && rawMax != 0 && engMin != 0.0 && engMax != 0.0 )
@@ -124,19 +163,20 @@ QList<TagScada*> *ScadaBuilder::LoadTags( QString fileName )
             pTag = new TagScada( id, description, address, pDevice );
         }
 
-        if( QString( pDevice->metaObject()->className() ) == "DevicesModbusEthernet" )
+        if( QString( pDevice->metaObject()->className() ) == "DeviceModbusEthernet" )
         {
             static_cast<DeviceModbusEthernet*>(pDevice)->TouchAddress(address);
         }
         else
         {
-            Q_ASSERT( false ); //TODO
+            Log::AddLog( Log::Critical, QString( "%1  not implemented").arg(pDevice->metaObject()->className()));
+            return false;
         }
 
         m_pTags->append( pTag );
     }
 
-    return nullptr;
+    return true;
 }
 
 
@@ -165,32 +205,15 @@ Device* ScadaBuilder::LoadModbusEthernetDevice( QJsonObject device )
     return new DeviceModbusEthernet( deviceNumber, serverUrl, timeOutMs);
 }
 
-TagScada* ScadaBuilder::LoadTag( QJsonObject tag )
+void ScadaBuilder::StartRefreshDevices()
 {
-    /*
-    int deviceNumber = device.value("id").toInt(-1);
-    if( deviceNumber == -1 )
+    for( int i = 0; i < m_pDevices->count(); i++ )
     {
-        Log::AddLog( Log::Critical, QString( "Device number not found") );
-        return NULL;
+        QThread *pThread = new QThread();
+        m_pDevices->at(i)->moveToThread(pThread);
+        QObject::connect(pThread, SIGNAL (started()), m_pDevices->at(i), SLOT (update()));
+        pThread->start();
     }
-
-    QString server = device.value("server").toString(NotFoundString);
-    if( server == NotFoundString)
-    {
-        Log::AddLog( Log::Critical, QString( "Server not found") );
-        return NULL;
-    }
-
-    int port = device.value("port").toInt(DefaultPort);
-
-    QUrl serverUrl = QUrl::fromUserInput( QString("%1:%2").arg(server).arg(port) );
-
-    int timeOutMs = device.value("time_out_ms").toInt(DefaultTimeOutMs);
-
-    return new DeviceModbusEthernet( deviceNumber, serverUrl, timeOutMs);
-    */
-    return nullptr;
 }
 
 Device* ScadaBuilder::FindDevice( int deviceId )

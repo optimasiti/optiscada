@@ -1,7 +1,7 @@
 #include "devicesmodbusrtu.h"
 #include "modbusmemory.h"
 
-DevicesModbusRTU::DevicesModbusRTU()
+DevicesModbusRTU::DevicesModbusRTU():Device( 0, 0 ) //Not implemented
 {
 
 }
