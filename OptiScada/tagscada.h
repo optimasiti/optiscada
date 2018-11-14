@@ -10,6 +10,11 @@ class TagScada
 public:
     int get_Id();
     QString get_Name();
+    Device *get_Device();
+    int get_RawMin();
+    int get_RawMax();
+    double get_EngMin();
+    double get_EngMax();
 
     TagScada( int id, QString name, int address, Device *pDevice );
     TagScada( int id, QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, Device *pDevice );

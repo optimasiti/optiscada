@@ -14,12 +14,11 @@
 			"id": 2,
 			"device_id": 2,
 			"address": 40065,
-			"description": "Caudal",
+			"description": "Consigna",
 			"raw_min": 0,
 			"raw_max": 1000,
 			"eng_min": 0,
 			"eng_max": 100
-		}
-		
+		}		
 	]
 }

@@ -10,6 +10,32 @@ QString TagScada::get_Name()
     return m_Name;
 }
 
+Device *TagScada::get_Device()
+{
+    return m_pDevice;
+}
+
+int TagScada::get_RawMin()
+{
+    return m_RawMin;
+}
+
+int TagScada::get_RawMax()
+{
+    return m_RawMax;
+}
+
+double TagScada::get_EngMin()
+{
+    return m_EngMin;
+}
+
+double TagScada::get_EngMax()
+{
+    return m_EngMax;
+}
+
+
 TagScada::TagScada( int id, QString name, int address, Device *pDevice ):
     m_Id( id ),
     m_Name( name ),

@@ -34,6 +34,24 @@ void ScadaBuilder_Test::BuildScada_Ok()
     QCOMPARE( pDeviceEthernet->get_ServerUrl().host(), "localhost2");
     QCOMPARE( pDeviceEthernet->get_TimeOutMs(), 2500);
 
+    TagScada *pTag = ScadaBuilder::get_Tags()->first();
+    QCOMPARE( pTag->get_Id(), 1);
+    QCOMPARE( pTag->get_Name(), "Consigna" );
+    QCOMPARE( pTag->get_Device()->get_Id(), 1 );
+    QCOMPARE( pTag->get_RawMin(), 10 );
+    QCOMPARE( pTag->get_RawMax(), 1000 );
+    QCOMPARE( pTag->get_EngMin(), 5.0 );
+    QCOMPARE( pTag->get_EngMax(), 100.0 );
+
+    pTag = ScadaBuilder::get_Tags()->last();
+    QCOMPARE( pTag->get_Id(), 2);
+    QCOMPARE( pTag->get_Name(), "Caudal" );
+    QCOMPARE( pTag->get_Device()->get_Id(), 2 );
+    QCOMPARE( pTag->get_RawMin(), 0 );
+    QCOMPARE( pTag->get_RawMax(), 1000 );
+    QCOMPARE( pTag->get_EngMin(), 0.0 );
+    QCOMPARE( pTag->get_EngMax(), 100.0 );
+
     // [Ending]
 
     ScadaBuilder::ShutdownScada();
@@ -43,7 +61,26 @@ void ScadaBuilder_Test::BuildScada_ErrorByDevices()
 {
     // [Preparation]
 
-    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/BuildScada _ErrorByDevices";
+    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/BuildScada_ErrorByDevices";
+
+    // [Execution]
+
+    bool built = ScadaBuilder::BuildScada( fileName );
+
+    // [Comparation]
+
+    QCOMPARE( built, false );
+
+    // [Ending]
+
+    ScadaBuilder::ShutdownScada();
+}
+
+void ScadaBuilder_Test::BuildScada_ErrorUnknownDevice()
+{
+    // [Preparation]
+
+    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/BuildScada_ErrorUnknownDevice";
 
     // [Execution]
 

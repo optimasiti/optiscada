@@ -11,6 +11,10 @@ class ScadaBuilder_Test : public QObject
 private slots:
     virtual void BuildScada_Ok();
     virtual void BuildScada_ErrorByDevices();
+    virtual void BuildScada_ErrorUnknownDevice();
+
 };
 
 #endif // SCADABUILDER_TEST_H
+
+//TEST Tags info

@@ -7,12 +7,5 @@
 			"port": 502,
 			"time_out_ms": 2000
 		}
-		{
-			"id": 2,
-			"type": "modbus_tcp",
-			"server": "localhost2",
-			"port": 503,
-			"time_out_ms": 2500
-		}
 	]
 }

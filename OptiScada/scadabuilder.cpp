@@ -18,8 +18,8 @@ const int ScadaBuilder::DefaultPort = 502;
 const QString ScadaBuilder::DeviceFileName = "devices.txt";
 const QString ScadaBuilder::TagsFileName = "tags.txt";
 
-QList<Device*> *ScadaBuilder::m_pDevices = new QList<Device*>();
-QList<TagScada*> *ScadaBuilder::m_pTags = new QList<TagScada*>();
+QList<Device*> *ScadaBuilder::m_pDevices = nullptr;
+QList<TagScada*> *ScadaBuilder::m_pTags = nullptr;
 
 QList<Device*> *ScadaBuilder::get_Devices()
 {
@@ -33,6 +33,12 @@ QList<TagScada*> *ScadaBuilder::get_Tags()
 
 bool ScadaBuilder::BuildScada( QString configPath )
 {
+    if( m_pDevices || m_pTags )
+        return false;
+
+    m_pDevices = new QList<Device*>();
+    m_pTags = new QList<TagScada*>();
+
     if( LoadDevices( configPath + "/" + DeviceFileName ))
     {
         if( LoadTags( configPath + "/" + TagsFileName ) )
@@ -47,25 +53,33 @@ bool ScadaBuilder::BuildScada( QString configPath )
 
 void ScadaBuilder::ShutdownScada()
 {
-    for( int i = 0; i < m_pTags->size(); i++)
-        delete m_pTags->at(i);
-
-    delete m_pTags;
-
-    for( int i = 0; i < m_pDevices->size(); i++ )
+    if( m_pTags )
     {
-        m_pDevices->at(i)->Finish();
+        for( int i = 0; i < m_pTags->size(); i++)
+            delete m_pTags->at(i);
 
-        QDateTime ts = QDateTime::currentDateTime().addMSecs( m_pDevices->at(i)->get_TimeOutMs()*2);
-
-        while(QDateTime::currentDateTime() < ts )
-        {
-            QThread::usleep(50000);
-            QCoreApplication::processEvents();
-        }
+        delete m_pTags;
+        m_pTags = nullptr;
     }
 
-    delete m_pDevices;
+    if( m_pDevices )
+    {
+        for( int i = 0; i < m_pDevices->size(); i++ )
+        {
+            m_pDevices->at(i)->Finish();
+
+            QDateTime ts = QDateTime::currentDateTime().addMSecs( m_pDevices->at(i)->get_TimeOutMs()*2);
+
+            while(QDateTime::currentDateTime() < ts )
+            {
+                QThread::usleep(50000);
+                QCoreApplication::processEvents();
+            }
+        }
+
+        delete m_pDevices;
+        m_pDevices = nullptr;
+    }
 }
 
 bool ScadaBuilder::LoadDevices( QString fileName )
@@ -154,13 +168,13 @@ bool ScadaBuilder::LoadTags( QString fileName )
             return false;
         }
 
-        if( rawMin != 0 && rawMax != 0 && engMin != 0.0 && engMax != 0.0 )
+        if( rawMin == 0 && rawMax == 0 && engMin == 0.0 && engMax == 0.0 )
         {
-            pTag = new TagScada( id, description, address, rawMin, rawMax, engMin, engMax, pDevice);
+            pTag = new TagScada( id, description, address, pDevice );
         }
         else
         {
-            pTag = new TagScada( id, description, address, pDevice );
+            pTag = new TagScada( id, description, address, rawMin, rawMax, engMin, engMax, pDevice);
         }
 
         if( QString( pDevice->metaObject()->className() ) == "DeviceModbusEthernet" )
