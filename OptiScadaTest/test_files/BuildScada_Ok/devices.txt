@@ -1,0 +1,20 @@
+{
+	"devices": [
+		{
+			"id": 1,
+			"type": "modbus_tcp",
+			"server": "localhost",
+			"port": 502,
+			"slave": 1,
+			"time_out_ms": 2000
+		},
+		{
+			"id": 2,
+			"type": "modbus_tcp",
+			"server": "localhost2",
+			"port": 503,
+			"slave": 10,
+			"time_out_ms": 2500
+		}
+	]
+}

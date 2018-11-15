@@ -17,7 +17,11 @@ class DeviceModbusEthernet : public Device
     Q_OBJECT
 
 public:
-    DeviceModbusEthernet( int deviceNumber, QUrl serverUrl, int timeOutMs );
+    QUrl get_ServerUrl();
+    int get_TimeOutMs();
+    int get_DeviceNumber();
+
+    DeviceModbusEthernet( int deviceId, QUrl serverUrl, int timeOutMs );
     virtual ~DeviceModbusEthernet();
 
     void TouchAddress( int address );
@@ -36,7 +40,6 @@ private:
     ModbusMemory *m_pMemory;
     QModbusTcpClient *m_pModbusClient;
     QUrl m_ServerUrl;
-    int m_TimeOutMs;
     QList<int> m_RefreshBlocks;
     QList<WriteCommand*> m_Writes;
     QMutex m_WritesMutex;

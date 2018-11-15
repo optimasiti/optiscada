@@ -11,13 +11,15 @@ class ScadaCore : public QObject
 {
     Q_OBJECT
 public:
-    QList<TagScada*> &get_Tags();
+    QList<TagScada*> *get_Tags();
 
     ScadaCore();
+    ~ScadaCore();
+
     bool Start();
+
 private:
-    QList<TagScada*> m_Tags;
-    QList<Device*> m_Devices;
+    static const QString ConfigFolder;
 };
 
 #endif // SCADACORE_H

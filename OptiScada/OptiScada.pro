@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     modbusmemory.cpp \
     modbuscommon.cpp \
     log.cpp \
-    writecommand.cpp
+    writecommand.cpp \
+    scadabuilder.cpp
 
 HEADERS  += mainwindow.h \
     device.h \
@@ -33,6 +34,7 @@ HEADERS  += mainwindow.h \
     modbusmemory.h \
     modbuscommon.h \
     log.h \
-    writecommand.h
+    writecommand.h \
+    scadabuilder.h
 
 FORMS    += mainwindow.ui
