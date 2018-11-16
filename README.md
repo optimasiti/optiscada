@@ -7,9 +7,9 @@ Used in a serie of blog entries showing a possible architecture of a Scada.
 - Communication with Modbus Ethernet.
 - Show tags values.
 - Send user values to automats.
+- Read configuration from json files.
 
 ### TODO
-- Create a configuration file.
 - Generate a runtime executable for Windows (Mac & linux if it is demanded).
 - Implement class to support Modbus RTU communication.
 - Implement alarms.
