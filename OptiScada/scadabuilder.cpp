@@ -1,5 +1,5 @@
 #include "scadabuilder.h"
-#include "device.h"
+#include "devicemodbusethernet.h".h"
 #include "devicemodbusethernet.h"
 #include "log.h"
 #include "tagscada.h"
@@ -18,10 +18,10 @@ const int ScadaBuilder::DefaultPort = 502;
 const QString ScadaBuilder::DeviceFileName = "devices.txt";
 const QString ScadaBuilder::TagsFileName = "tags.txt";
 
-QList<Device*> *ScadaBuilder::m_pDevices = nullptr;
+QList<DeviceModbusEthernet*> *ScadaBuilder::m_pDevices = nullptr;
 QList<TagScada*> *ScadaBuilder::m_pTags = nullptr;
 
-QList<Device*> *ScadaBuilder::get_Devices()
+QList<DeviceModbusEthernet*> *ScadaBuilder::get_Devices()
 {
     return m_pDevices;
 }
@@ -36,7 +36,7 @@ bool ScadaBuilder::BuildScada( QString configPath )
     if( m_pDevices || m_pTags )
         return false;
 
-    m_pDevices = new QList<Device*>();
+    m_pDevices = new QList<DeviceModbusEthernet*>();
     m_pTags = new QList<TagScada*>();
 
     if( LoadDevices( configPath + "/" + DeviceFileName ))
@@ -103,27 +103,10 @@ bool ScadaBuilder::LoadDevices( QString fileName )
 
     foreach( device, devices )
     {
-        QString deviceType = device.toObject().value("type").toString( NotFoundString );
+        DeviceModbusEthernet *pDevice = ScadaBuilder::LoadModbusEthernetDevice(device.toObject());
 
-        if( deviceType == NotFoundString )
-        {
-            Log::AddLog( Log::Critical, QString("No device type found in config file ") + fileName );
-            return false;
-        }
-
-        if( deviceType == "modbus_tcp" )
-        {
-            Device *pDevice = ScadaBuilder::LoadModbusEthernetDevice(device.toObject());
-
-            if( pDevice )
-                m_pDevices->append( pDevice );
-
-        }
-        else
-        {
-            Log::AddLog( Log::Critical, QString("Unsupported device type %1 ").arg(deviceType) + QString(" in config file ") + fileName );
-            return false;
-        }
+        if( pDevice )
+            m_pDevices->append( pDevice );
     }
 
     return true;
@@ -160,7 +143,7 @@ bool ScadaBuilder::LoadTags( QString fileName )
         double engMax = tag.toObject().value("eng_max").toDouble();
 
         TagScada *pTag;
-        Device *pDevice = FindDevice( deviceId );
+        DeviceModbusEthernet *pDevice = FindDevice( deviceId );
 
         if( pDevice == nullptr)
         {
@@ -194,7 +177,7 @@ bool ScadaBuilder::LoadTags( QString fileName )
 }
 
 
-Device* ScadaBuilder::LoadModbusEthernetDevice( QJsonObject device )
+DeviceModbusEthernet* ScadaBuilder::LoadModbusEthernetDevice( QJsonObject device )
 {
     int deviceNumber = device.value("id").toInt(-1);
     if( deviceNumber == -1 )
@@ -230,7 +213,7 @@ void ScadaBuilder::StartRefreshDevices()
     }
 }
 
-Device* ScadaBuilder::FindDevice( int deviceId )
+DeviceModbusEthernet* ScadaBuilder::FindDevice( int deviceId )
 {
     for( int i = 0; i < m_pDevices->size(); i++ )
         if( m_pDevices->at(i)->get_Id() == deviceId )

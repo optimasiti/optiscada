@@ -14,14 +14,19 @@
 const int DeviceModbusEthernet::NumberOfRetries = 0;
 const int DeviceModbusEthernet::MaxReadCount = 20;
 
-QUrl DeviceModbusEthernet::get_ServerUrl()
+int DeviceModbusEthernet::get_Id()
 {
-    return m_ServerUrl;
+    return m_Id;
 }
 
 int DeviceModbusEthernet::get_TimeOutMs()
 {
     return m_TimeOutMs;
+}
+
+QUrl DeviceModbusEthernet::get_ServerUrl()
+{
+    return m_ServerUrl;
 }
 
 int DeviceModbusEthernet::get_DeviceNumber()
@@ -31,7 +36,8 @@ int DeviceModbusEthernet::get_DeviceNumber()
 
 
 DeviceModbusEthernet::DeviceModbusEthernet( int deviceId, QUrl serverUrl, int timeOutMs ):
-    Device( deviceId,  timeOutMs),
+    m_Id( deviceId ),
+    m_TimeOutMs( timeOutMs),
     m_ServerUrl( serverUrl )
 {
     m_pMemory = new ModbusMemory( deviceId );
@@ -184,6 +190,11 @@ bool DeviceModbusEthernet::Connect()
     Log::AddLog( Log::Info, QString("DeviceModbusEthernet::Connect Connection status to device Host=%1 Port=%2 Status=%3").arg(m_ServerUrl.host()).arg(m_ServerUrl.port()).arg(m_pModbusClient->state() == QModbusDevice::ConnectedState));
 
     return m_pModbusClient->state() == QModbusDevice::ConnectedState;
+}
+
+void DeviceModbusEthernet::update()
+{
+    UpdateMemory();
 }
 
 

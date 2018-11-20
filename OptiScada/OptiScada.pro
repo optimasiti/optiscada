@@ -14,11 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    device.cpp \
     tagscada.cpp \
     scadacore.cpp \
     devicemodbusethernet.cpp \
-    devicesmodbusrtu.cpp \
     modbusmemory.cpp \
     modbuscommon.cpp \
     log.cpp \
@@ -26,11 +24,9 @@ SOURCES += main.cpp\
     scadabuilder.cpp
 
 HEADERS  += mainwindow.h \
-    device.h \
     tagscada.h \
     scadacore.h \
     devicemodbusethernet.h \
-    devicesmodbusrtu.h \
     modbusmemory.h \
     modbuscommon.h \
     log.h \

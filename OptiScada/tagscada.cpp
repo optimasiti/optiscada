@@ -1,4 +1,5 @@
 #include "tagscada.h"
+#include "devicemodbusethernet.h"
 
 int TagScada::get_Id()
 {
@@ -10,7 +11,7 @@ QString TagScada::get_Name()
     return m_Name;
 }
 
-Device *TagScada::get_Device()
+DeviceModbusEthernet *TagScada::get_Device()
 {
     return m_pDevice;
 }
@@ -36,7 +37,7 @@ double TagScada::get_EngMax()
 }
 
 
-TagScada::TagScada( int id, QString name, int address, Device *pDevice ):
+TagScada::TagScada( int id, QString name, int address, DeviceModbusEthernet *pDevice ):
     m_Id( id ),
     m_Name( name ),
     m_Address( address ),
@@ -46,7 +47,7 @@ TagScada::TagScada( int id, QString name, int address, Device *pDevice ):
 }
 
 
-TagScada::TagScada( int id, QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, Device *pDevice ):
+TagScada::TagScada( int id, QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, DeviceModbusEthernet *pDevice ):
     m_Id( id ),
     m_Name( name ),
     m_Address( address ),

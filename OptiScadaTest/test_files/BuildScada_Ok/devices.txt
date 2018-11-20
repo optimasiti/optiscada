@@ -2,7 +2,6 @@
 	"devices": [
 		{
 			"id": 1,
-			"type": "modbus_tcp",
 			"server": "localhost",
 			"port": 502,
 			"slave": 1,
@@ -10,7 +9,6 @@
 		},
 		{
 			"id": 2,
-			"type": "modbus_tcp",
 			"server": "localhost2",
 			"port": 503,
 			"slave": 10,

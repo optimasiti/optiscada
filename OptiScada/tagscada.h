@@ -1,23 +1,23 @@
 #ifndef TAGSCADA_H
 #define TAGSCADA_H
 
-#include "device.h"
-
 #include <QVector>
+
+class DeviceModbusEthernet;
 
 class TagScada
 {
 public:
     int get_Id();
     QString get_Name();
-    Device *get_Device();
+    DeviceModbusEthernet *get_Device();
     int get_RawMin();
     int get_RawMax();
     double get_EngMin();
     double get_EngMax();
 
-    TagScada( int id, QString name, int address, Device *pDevice );
-    TagScada( int id, QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, Device *pDevice );
+    TagScada( int id, QString name, int address, DeviceModbusEthernet *pDevice );
+    TagScada( int id, QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, DeviceModbusEthernet *pDevice );
 
     bool GetValue( quint16 &value );
     void SetValue( quint16 value );
@@ -31,7 +31,7 @@ private:
     QString m_Name;
     int m_Address;
     bool m_RawEng;
-    Device *m_pDevice;
+    DeviceModbusEthernet *m_pDevice;
     quint16 m_RawMin;
     quint16 m_RawMax;
     double m_EngMin;
