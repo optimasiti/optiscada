@@ -85,7 +85,7 @@ bool TagScada::GetValue( quint16 &value)
 
     return isValid;
 }
-
+//TODO
 void TagScada::SetValue( quint16 value )
 {
     QVector<quint16> values;

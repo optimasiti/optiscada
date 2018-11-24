@@ -21,7 +21,9 @@ SOURCES += main.cpp\
     modbuscommon.cpp \
     log.cpp \
     writecommand.cpp \
-    scadabuilder.cpp
+    scadabuilder.cpp \
+    alarm.cpp \
+    alarmsp.cpp
 
 HEADERS  += mainwindow.h \
     tagscada.h \
@@ -31,6 +33,8 @@ HEADERS  += mainwindow.h \
     modbuscommon.h \
     log.h \
     writecommand.h \
-    scadabuilder.h
+    scadabuilder.h \
+    alarm.h \
+    alarmsp.h
 
 FORMS    += mainwindow.ui

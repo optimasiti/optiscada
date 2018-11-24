@@ -26,7 +26,7 @@ public:
     bool GetValue( double &value );
     void SetValue( double value );
 
-private:
+protected:
     int m_Id;
     QString m_Name;
     int m_Address;
