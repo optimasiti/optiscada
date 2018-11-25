@@ -1,8 +1,8 @@
 #include "alarmsp_test.h"
 #include "alarmsp.h"
-#include "tagscada_stub.h".h"
+#include "tagscada_stub.h"
 
-//TODO
+
 
 void AlarmSP_Test::Evaluate_Alarm()
 {
@@ -11,10 +11,10 @@ void AlarmSP_Test::Evaluate_Alarm()
     TagScada_Stub *pTagPV = new TagScada_Stub( 2, "TAG_PS", 1, nullptr);
     double tolerance = 1;
 
-    double pv = 100;
+    double pv = 50;
     double sp = 100;
 
-    pTagPV->SetValue(pv); //TODO Si que hay que hacer stub.
+    pTagPV->SetValue(pv);
     pTagSP->SetValue(sp);
 
     AlarmSP *pAlarm = new AlarmSP( "Name", pTagSP, pTagPV, tolerance );
@@ -28,6 +28,71 @@ void AlarmSP_Test::Evaluate_Alarm()
     bool isOn = pAlarm->get_IsOn();
 
     QCOMPARE( isOn, true );
+
+    // [Ending]
+
+    delete pAlarm;
+    delete pTagSP;
+    delete pTagPV;
+}
+
+
+void AlarmSP_Test::Evaluate_NoAlarm()
+{
+    // [Preparation]
+    TagScada_Stub *pTagSP = new TagScada_Stub( 1, "TAG_SP", 0, nullptr);
+    TagScada_Stub *pTagPV = new TagScada_Stub( 2, "TAG_PS", 1, nullptr);
+    double tolerance = 1;
+
+    double pv = 99;
+    double sp = 100;
+
+    pTagPV->SetValue(pv);
+    pTagSP->SetValue(sp);
+
+    AlarmSP *pAlarm = new AlarmSP( "Name", pTagSP, pTagPV, tolerance );
+
+    // [Execution]
+
+    pAlarm->Evaluate();
+
+    // [Comparation]
+
+    bool isOn = pAlarm->get_IsOn();
+
+    QCOMPARE( isOn, false );
+
+    // [Ending]
+
+    delete pAlarm;
+    delete pTagSP;
+    delete pTagPV;
+}
+
+void AlarmSP_Test::Evaluate_NoAlarmByTolerance()
+{
+    // [Preparation]
+    TagScada_Stub *pTagSP = new TagScada_Stub( 1, "TAG_SP", 0, nullptr);
+    TagScada_Stub *pTagPV = new TagScada_Stub( 2, "TAG_PS", 1, nullptr);
+    double tolerance = 10;
+
+    double pv = 95;
+    double sp = 100;
+
+    pTagPV->SetValue(pv);
+    pTagSP->SetValue(sp);
+
+    AlarmSP *pAlarm = new AlarmSP( "Name", pTagSP, pTagPV, tolerance );
+
+    // [Execution]
+
+    pAlarm->Evaluate();
+
+    // [Comparation]
+
+    bool isOn = pAlarm->get_IsOn();
+
+    QCOMPARE( isOn, false );
 
     // [Ending]
 

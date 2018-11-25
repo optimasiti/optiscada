@@ -7,9 +7,13 @@ class TagScada_Stub : public TagScada
 {
 public:
     TagScada_Stub( int id, QString name, int address, DeviceModbusEthernet *pDevice );
+    virtual ~TagScada_Stub();
 
-    bool GetValue( double &value );
-    void SetValue( double value );
+    virtual bool GetValue( double &value );
+    virtual void SetValue( double value );
+
+private:
+    double m_TestValue;
 };
 
 #endif // TAGSCADA_STUB_H

@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     writecommand.cpp \
     scadabuilder.cpp \
     alarm.cpp \
-    alarmsp.cpp
+    alarmsp.cpp \
+    alarmsmanager.cpp
 
 HEADERS  += mainwindow.h \
     tagscada.h \
@@ -35,6 +36,7 @@ HEADERS  += mainwindow.h \
     writecommand.h \
     scadabuilder.h \
     alarm.h \
-    alarmsp.h
+    alarmsp.h \
+    alarmsmanager.h
 
 FORMS    += mainwindow.ui

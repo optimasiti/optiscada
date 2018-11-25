@@ -6,14 +6,18 @@ TagScada_Stub::TagScada_Stub( int id, QString name, int address, DeviceModbusEth
 
 }
 
+TagScada_Stub::~TagScada_Stub()
+{
+
+}
+
 bool TagScada_Stub::GetValue( double &value )
 {
-    //TODO
-    int i = 0;
+    value = m_TestValue;
+    return true;
 }
 
 void TagScada_Stub::SetValue( double value )
 {
-    //TODO
-    int i = 0;
+    m_TestValue = value;
 }

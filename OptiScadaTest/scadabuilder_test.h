@@ -12,6 +12,7 @@ private slots:
     virtual void BuildScada_Ok();
     virtual void BuildScada_ErrorByDevices();
     virtual void BuildScada_ErrorUnknownDevice();
+    virtual void BuildScada_WithAlarmsOk();
 
 };
 
