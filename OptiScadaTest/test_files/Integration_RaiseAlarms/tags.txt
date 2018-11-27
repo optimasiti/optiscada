@@ -1,0 +1,45 @@
+{
+	"tags": [
+		{
+			"id": 1,
+			"device_id": 1,
+			"address": 40065,
+			"description": "Consigna",
+			"raw_min": 0,
+			"raw_max": 1000,
+			"eng_min": 0,
+			"eng_max": 100
+		},
+		{
+			"id": 2,
+			"device_id": 2,
+			"address": 40065,
+			"description": "Caudal",
+			"raw_min": 0,
+			"raw_max": 1000,
+			"eng_min": 0,
+			"eng_max": 100
+		},
+{
+			"id": 3,
+			"device_id": 1,
+			"address": 40066,
+			"description": "Valor",
+			"raw_min": 0,
+			"raw_max": 1000,
+			"eng_min": 0,
+			"eng_max": 100
+		},
+{
+			"id": 4,
+			"device_id": 1,
+			"address": 40066,
+			"description": "Valor",
+			"raw_min": 0,
+			"raw_max": 1000,
+			"eng_min": 0,
+			"eng_max": 100
+		}
+		
+	]
+}

@@ -21,6 +21,11 @@ Alarm::Alarm( QString name ):
 {
 }
 
+Alarm::~Alarm()
+{
+
+}
+
 void Alarm::SetOn()
 {
     m_IsOn = true;

@@ -59,7 +59,7 @@ TagScada::TagScada( int id, QString name, int address, quint16 rawMin, quint16 r
     m_EngMax( engMax )
 {
 }
-
+/*
 bool TagScada::GetValue( quint16 &value)
 {
     bool isValid;
@@ -100,7 +100,7 @@ void TagScada::SetValue( quint16 value )
 
     m_pDevice->WriteWords( m_Address, values );
 }
-
+*/
 bool TagScada::GetValue( bool &value)
 {
     bool isValid;

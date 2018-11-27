@@ -1,11 +1,12 @@
 #include <QCoreApplication>
 #include <QTest>
 
-#include "modbusserver.h" //TODO
+//s#include "modbusserver.h" //TODO
 #include "devicemodbusethernet_test.h"
 #include "scadabuilder_test.h"
 #include "alarmsp_test.h"
 #include "alarmsmanager_test.h"
+#include "integration_test.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,13 +14,14 @@ int main(int argc, char *argv[])
 
     //TODO
     //DeviceModbusEthernet_Test deviceModbusEthernetTest;
-    ScadaBuilder_Test scadaBuilderTest;
+    //ScadaBuilder_Test scadaBuilderTest;
     //AlarmSP_Test alarmSPTest;
     //AlarmsManager_Test alarmsManagerTest;
+    Integration_Test integrationTest;
 
 //    QTest::qExec(&deviceModbusEthernetTest);
-    QTest::qExec(&scadaBuilderTest);
+    //QTest::qExec(&scadaBuilderTest);
     //QTest::qExec(&alarmSPTest);
     //QTest::qExec(&alarmsManagerTest);
-
+    QTest::qExec(&integrationTest);
 }

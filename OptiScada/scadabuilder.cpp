@@ -265,6 +265,8 @@ bool ScadaBuilder::LoadAlarms( QString fileName )
         m_pAlarms->append( pAlarm );
     }
 
+    m_pAlarmsManager = new AlarmsManager( m_pAlarms );
+
     return true;
 }
 

@@ -12,6 +12,7 @@ class AlarmsManager : public QObject
 
 public:
     bool get_Finished();
+    QList<Alarm*>* get_Alarms();
 
     AlarmsManager(QList<Alarm*>*pAlarms);
     QList<QString> GetOnAlarms();

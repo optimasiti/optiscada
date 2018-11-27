@@ -2,7 +2,8 @@
 #include "scadabuilder.h"
 #include "devicemodbusethernet.h"
 #include "tagscada.h"
-#include "alarmsmanager_spy.h"
+#include "alarmsmanager.h"
+
 
 
 
@@ -142,12 +143,34 @@ void ScadaBuilder_Test::BuildScada_WithAlarmsOk()
     QCOMPARE( pTag->get_EngMin(), 0.0 );
     QCOMPARE( pTag->get_EngMax(), 100.0 );
 
-    AlarmsManager_Spy *pAlarmsManagerSpy = new AlarmsManager_Spy( ScadaBuilder::get_AlarmsManager());
-    QCOMPARE( pAlarmsManagerSpy->get_Alarms()->size(), 1 );
+    QList<Alarm*>*pAlarms = ScadaBuilder::get_AlarmsManager()->get_Alarms();
 
+    QString alarm1Name = pAlarms->first()->get_Name();
+    QString alarm2Name = pAlarms->last()->get_Name();
+
+    QCOMPARE( alarm1Name, "Fuera de consigna");
+    QCOMPARE( alarm2Name, "Fuera de consigna - 2");
 
     // [Ending]
 
     ScadaBuilder::ShutdownScada();
 }
 
+void ScadaBuilder_Test::BuildScada_WithAlarmsError()
+{
+    // [Preparation]
+
+    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/BuildScada_WithAlarmsError";
+
+    // [Execution]
+
+    bool built = ScadaBuilder::BuildScada( fileName );
+
+    // [Comparation]
+
+    QCOMPARE( built, false );
+
+     // [Ending]
+
+    ScadaBuilder::ShutdownScada();
+}

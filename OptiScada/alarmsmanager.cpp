@@ -8,6 +8,11 @@ bool AlarmsManager::get_Finished()
     return m_Finished;
 }
 
+QList<Alarm*>* AlarmsManager::get_Alarms()
+{
+    return m_pAlarms;
+}
+
 AlarmsManager::AlarmsManager( QList<Alarm*> *pAlarms ):
     m_pAlarms( pAlarms )
 {

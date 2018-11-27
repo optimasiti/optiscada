@@ -1,0 +1,11 @@
+{
+	"alarms": [
+		{
+			"name MISSING": "Fuera de consigna",
+			"tag_sp": 1,
+			"tag_pv": 2,
+			"tolerance_percentage": 1
+		}
+		
+	]
+}

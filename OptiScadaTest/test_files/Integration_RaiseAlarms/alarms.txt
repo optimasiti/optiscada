@@ -3,13 +3,13 @@
 		{
 			"name": "Fuera de consigna",
 			"tag_sp": 1,
-			"tag_pv": 2,
+			"tag_pv": 3,
 			"tolerance_percentage": 1
 		},
 		{
 			"name": "Fuera de consigna - 2",
-			"tag_sp": 1,
-			"tag_pv": 2,
+			"tag_sp": 2,
+			"tag_pv": 4,
 			"tolerance_percentage": 1
 		}
 		

@@ -13,6 +13,7 @@ public:
     QDateTime get_OnTs();
 
     Alarm( QString name );
+    virtual ~Alarm();
     void SetOn();
     void SetOff();
 
