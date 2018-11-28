@@ -1,5 +1,5 @@
 #include "scadabuilder.h"
-#include "devicemodbusethernet.h".h"
+#include "devicemodbusethernet.h"
 #include "devicemodbusethernet.h"
 #include "log.h"
 #include "tagscada.h"
@@ -54,6 +54,7 @@ bool ScadaBuilder::BuildScada( QString configPath )
             if( LoadAlarms( configPath + "/" + AlarmsFileName ))
             {
                 StartRefreshDevices();
+                StartAlarmsManager();
                 return true;
             }
         }
@@ -267,6 +268,8 @@ bool ScadaBuilder::LoadAlarms( QString fileName )
 
     m_pAlarmsManager = new AlarmsManager( m_pAlarms );
 
+
+
     return true;
 }
 
@@ -277,14 +280,14 @@ DeviceModbusEthernet* ScadaBuilder::LoadModbusEthernetDevice( QJsonObject device
     if( deviceNumber == -1 )
     {
         Log::AddLog( Log::Critical, QString( "Device number not found") );
-        return NULL;
+        return nullptr;
     }
 
     QString server = device.value("server").toString(NotFoundString);
     if( server == NotFoundString)
     {
         Log::AddLog( Log::Critical, QString( "Server not found") );
-        return NULL;
+        return nullptr;
     }
 
     int port = device.value("port").toInt(DefaultPort);
@@ -305,6 +308,17 @@ void ScadaBuilder::StartRefreshDevices()
         QObject::connect(pThread, SIGNAL (started()), m_pDevices->at(i), SLOT (update()));
         pThread->start();
     }
+}
+
+void ScadaBuilder::StartAlarmsManager()
+{
+    if( !m_pAlarmsManager )
+        return;
+
+    QThread *pThread = new QThread();
+    m_pAlarmsManager->moveToThread( pThread );
+    QObject::connect(pThread, SIGNAL (started()), m_pAlarmsManager, SLOT (evaluatePool()));
+    pThread->start();
 }
 
 DeviceModbusEthernet* ScadaBuilder::FindDevice( int deviceId )

@@ -138,7 +138,7 @@ bool TagScada::GetValue( double &value )
 
     isValid = m_pDevice->ReadWords( m_Address, count, readValues );
 
-    if( readValues.count() > 0 )
+    if( isValid )
     {
         value = readValues.first();
         if( m_RawEng )
@@ -146,10 +146,6 @@ bool TagScada::GetValue( double &value )
             double factor = (m_EngMax - m_EngMin)/(m_RawMax-m_RawMin);
             value = (value - m_RawMin) * factor + m_EngMin;
         }
-    }
-    else
-    {
-        isValid = false;
     }
 
     return isValid;

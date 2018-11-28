@@ -40,6 +40,7 @@ private:
     static DeviceModbusEthernet* FindDevice( int deviceId );
     static TagScada* FindTag( int tagId );
     static void StartRefreshDevices();
+    static void StartAlarmsManager();
 
 };
 

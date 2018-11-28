@@ -5,7 +5,7 @@
 #include "alarmsmanager.h"
 
 #include <QThread>
-
+/*TODO
 void Integration_Test::Integration_RefreshTags()
 {
     // [Preparation]
@@ -73,6 +73,7 @@ void Integration_Test::Integration_RefreshTags()
     delete pServer2;
 
 }
+*/
 
 void Integration_Test::Integration_RaiseAlarms()
 {
@@ -100,6 +101,11 @@ void Integration_Test::Integration_RaiseAlarms()
         return;
     }
 
+    pServer1->SetRegisterValue(40065, 100 );
+    pServer1->SetRegisterValue(40066, 50);
+    pServer2->SetRegisterValue(40065, 50 );
+    pServer2->SetRegisterValue(40066, 49 );
+
     bool built = ScadaBuilder::BuildScada( fileName );
 
     if( !built )
@@ -107,11 +113,6 @@ void Integration_Test::Integration_RaiseAlarms()
         QFAIL( "Unexpected error building scada");
         return;
     }
-
-    pServer1->SetRegisterValue(40065, 100 );
-    pServer1->SetRegisterValue(40066, 50);
-    pServer2->SetRegisterValue(40065, 50 );
-    pServer2->SetRegisterValue(40066, 49 );
 
     // [Execution]
 
@@ -137,3 +138,4 @@ void Integration_Test::Integration_RaiseAlarms()
     delete pServer2;
 
 }
+
