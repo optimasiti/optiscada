@@ -32,7 +32,14 @@ SOURCES +=  main.cpp \
             ../OptiScada/log.cpp \
     scadabuilder_test.cpp \
     ../OptiScada/scadabuilder.cpp \
-    ../OptiScada/tagscada.cpp
+    ../OptiScada/tagscada.cpp \
+    ../OptiScada/alarm.cpp \
+    ../OptiScada/alarmsp.cpp \
+    alarmsp_test.cpp \
+    tagscada_stub.cpp \
+    ../OptiScada/alarmsmanager.cpp \
+    alarmsmanager_test.cpp \
+    integration_test.cpp
 
 HEADERS +=  devicemodbusethernet_test.h \
             modbusserver.h \
@@ -43,4 +50,11 @@ HEADERS +=  devicemodbusethernet_test.h \
             ../OptiScada/log.h \
     scadabuilder_test.h \
     ../OptiScada/scadabuilder.h \
-    ../OptiScada/tagscada.h
+    ../OptiScada/tagscada.h \
+    ../OptiScada/alarm.h \
+    ../OptiScada/alarmsp.h \
+    alarmsp_test.h \
+    tagscada_stub.h \
+    ../OptiScada/alarmsmanager.h \
+    alarmsmanager_test.h \
+    integration_test.h

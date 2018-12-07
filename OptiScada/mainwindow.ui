@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>248</width>
-    <height>127</height>
+    <width>300</width>
+    <height>177</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,13 +83,34 @@
      <string>Lectura</string>
     </property>
    </widget>
+   <widget class="QLabel" name="m_pAlarm">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>271</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>248</width>
+     <width>300</width>
      <height>21</height>
     </rect>
    </property>

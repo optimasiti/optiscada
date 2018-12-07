@@ -26,13 +26,13 @@ bool ModbusServer::Start( int port, int deviceNumber )
 
 void ModbusServer::SetRegisterValue( int address, quint16 value )
 {
-    if( address >= 40001 )
+    if( address >= 40000 )
         m_pServer->setData( QModbusDataUnit::HoldingRegisters, static_cast<quint16>(address) - 40000, value );
-    else if( address >= 30001 )
+    else if( address >= 30000 )
         m_pServer->setData( QModbusDataUnit::InputRegisters, static_cast<quint16>(address) - 30000, value );
-    else if( address >= 10001 && address <= 20000 )
+    else if( address >= 10000 && address < 20000 )
         m_pServer->setData( QModbusDataUnit::DiscreteInputs, static_cast<quint16>(address) - 10000, value );
-    else if( address >= 1 && address <= 10000)
+    else if( address >= 0 && address < 10000)
         m_pServer->setData( QModbusDataUnit::Coils, static_cast<quint16>(address), value );
 }
 
@@ -42,15 +42,14 @@ quint16 ModbusServer::GetRegisterValue( int address )
     int count = 1;
 
     QModbusDataUnit *pData = nullptr;
-    bool res = false;
 
-    if( address >= 40001 )
+    if( address >= 40000 )
         pData = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, static_cast<quint16>(address) - 40000, count);
-    else if( address >= 30001 )
+    else if( address >= 30000 )
         pData = new QModbusDataUnit(QModbusDataUnit::InputRegisters, static_cast<quint16>(address) - 30000, count);
-    else if( address >= 10001 && address <= 20000 )
+    else if( address >= 10000 && address < 20000 )
         pData = new QModbusDataUnit(QModbusDataUnit::DiscreteInputs, static_cast<quint16>(address) - 10000, count);
-    else if( address >= 1 && address <= 10000)
+    else if( address >= 0 && address < 10000)
         pData = new QModbusDataUnit(QModbusDataUnit::Coils, static_cast<quint16>(address), count);
 
     m_pServer->data( pData );

@@ -13,6 +13,11 @@ QList<TagScada*>* ScadaCore::get_Tags()
     return ScadaBuilder::get_Tags();
 }
 
+AlarmsManager *ScadaCore::get_AlarmsManager()
+{
+    return ScadaBuilder::get_AlarmsManager();
+}
+
 ScadaCore::ScadaCore()
 {
 }

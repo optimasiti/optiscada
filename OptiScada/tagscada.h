@@ -2,6 +2,7 @@
 #define TAGSCADA_H
 
 #include <QVector>
+#include <QString>
 
 class DeviceModbusEthernet;
 
@@ -18,15 +19,14 @@ public:
 
     TagScada( int id, QString name, int address, DeviceModbusEthernet *pDevice );
     TagScada( int id, QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, DeviceModbusEthernet *pDevice );
+    virtual ~TagScada();
 
-    bool GetValue( quint16 &value );
-    void SetValue( quint16 value );
     bool GetValue( bool &value );
     void SetValue( bool value );
-    bool GetValue( double &value );
-    void SetValue( double value );
+    virtual bool GetValue( double &value );
+    virtual void SetValue( double value );
 
-private:
+protected:
     int m_Id;
     QString m_Name;
     int m_Address;

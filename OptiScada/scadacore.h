@@ -6,12 +6,14 @@
 
 class TagScada;
 class Device;
+class AlarmsManager;
 
 class ScadaCore : public QObject
 {
     Q_OBJECT
 public:
     QList<TagScada*> *get_Tags();
+    AlarmsManager *get_AlarmsManager();
 
     ScadaCore();
     ~ScadaCore();

@@ -22,5 +22,7 @@ QString Log::SeverityToString( Severity severity )
         case Error: return "ERROR   ";
         case Critical: return "CRITICAL";
     }
+
+    return "UNDEFINED";
 }
 
