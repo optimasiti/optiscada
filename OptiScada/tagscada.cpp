@@ -59,48 +59,11 @@ TagScada::TagScada( int id, QString name, int address, quint16 rawMin, quint16 r
     m_EngMax( engMax )
 {
 }
-/*
-bool TagScada::GetValue( quint16 &value)
+
+TagScada::~TagScada()
 {
-    bool isValid;
-    static const int count = 1;
-    QVector<quint16> readValues;
-
-    isValid = m_pDevice->ReadWords( m_Address, count, readValues );
-
-    if( readValues.count() > 0 )
-    {
-        value = readValues.first();
-
-        if( m_RawEng )
-        {
-            double factor = (m_EngMax - m_EngMin)/(m_RawMax-m_RawMin);
-            value = (value - static_cast<quint16>(m_RawMin)) * static_cast<quint16>(factor) + static_cast<quint16>(m_EngMin);
-        }
-    }
-    else
-    {
-        isValid = false;
-    }
-
-    return isValid;
 }
-//TODO
-void TagScada::SetValue( quint16 value )
-{
-    QVector<quint16> values;
 
-    if( m_RawEng )
-    {
-        double factor = (m_RawMax-m_RawMin)/(m_EngMax - m_EngMin);
-        value = (value - m_EngMin) * factor + m_RawMin;
-    }
-
-    values.append( value );
-
-    m_pDevice->WriteWords( m_Address, values );
-}
-*/
 bool TagScada::GetValue( bool &value)
 {
     bool isValid;

@@ -20,6 +20,10 @@ AlarmsManager::AlarmsManager( QList<Alarm*> *pAlarms ):
     m_Finished = true;
 }
 
+AlarmsManager::~AlarmsManager()
+{
+}
+
 QList<QString> AlarmsManager::GetOnAlarms()
 {
     QList<QString> onAlarms;

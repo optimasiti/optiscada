@@ -1,5 +1,6 @@
 #include "alarmsp.h"
 #include "tagscada.h"
+#include "math.h"
 
 
 AlarmSP::AlarmSP( QString name, TagScada *pTagSP, TagScada *pTagPV, double tolerance ):
@@ -26,11 +27,8 @@ void AlarmSP::Evaluate()
     if( !m_pTagPV->GetValue( pv ))
         return;
 
-    double diff = sp - pv;
-    diff = diff * diff / diff;
-
-    double margin = sp * m_Tolerance/100;
-    margin = margin * margin / margin;
+    double diff = fabs(sp - pv);
+    double margin = fabs(sp * m_Tolerance/100);
 
     if( diff > margin )
         this->SetOn();

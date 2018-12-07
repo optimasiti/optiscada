@@ -19,9 +19,8 @@ public:
 
     TagScada( int id, QString name, int address, DeviceModbusEthernet *pDevice );
     TagScada( int id, QString name, int address, quint16 rawMin, quint16 rawMax, double engMin, double engMax, DeviceModbusEthernet *pDevice );
+    virtual ~TagScada();
 
-    //bool GetValue( quint16 &value );
-    //void SetValue( quint16 value );
     bool GetValue( bool &value );
     void SetValue( bool value );
     virtual bool GetValue( double &value );

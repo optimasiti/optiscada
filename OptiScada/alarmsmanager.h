@@ -15,6 +15,7 @@ public:
     QList<Alarm*>* get_Alarms();
 
     AlarmsManager(QList<Alarm*>*pAlarms);
+    virtual ~AlarmsManager();
     QList<QString> GetOnAlarms();
 
     void Finish();

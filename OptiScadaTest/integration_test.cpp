@@ -5,7 +5,7 @@
 #include "alarmsmanager.h"
 
 #include <QThread>
-/*TODO
+
 void Integration_Test::Integration_RefreshTags()
 {
     // [Preparation]
@@ -73,7 +73,7 @@ void Integration_Test::Integration_RefreshTags()
     delete pServer2;
 
 }
-*/
+
 
 void Integration_Test::Integration_RaiseAlarms()
 {

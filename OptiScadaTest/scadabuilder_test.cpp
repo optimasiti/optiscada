@@ -97,6 +97,26 @@ void ScadaBuilder_Test::BuildScada_ErrorUnknownDevice()
     ScadaBuilder::ShutdownScada();
 }
 
+void ScadaBuilder_Test::BuildScada_ErrorDuplicatedTag()
+{
+    // [Preparation]
+
+    QString fileName = QDir::currentPath()+"/../OptiScadaTest/test_files/BuildScada_ErrorDuplicatedTag";
+
+    // [Execution]
+
+    bool built = ScadaBuilder::BuildScada( fileName );
+
+    // [Comparation]
+
+    QCOMPARE( built, false );
+
+    // [Ending]
+
+    ScadaBuilder::ShutdownScada();
+}
+
+
 void ScadaBuilder_Test::BuildScada_WithAlarmsOk()
 {
     // [Preparation]

@@ -27,22 +27,22 @@ void ModbusMemory::SetValues( int startAddress, const QVector<quint16> &values )
 
     quint16 *pMemory;
 
-    if( startAddress >= 40001 )
+    if( startAddress >= 40000 )
     {
         pMemory = m_HoldingRegisters;
         m_LastTsHoldingRegisters = QDateTime::currentDateTime();
     }
-    else if( startAddress >= 30001 )
+    else if( startAddress >= 30000 )
     {
         pMemory = m_InputRegisters;
         m_LastTsInputRegisters = QDateTime::currentDateTime();
     }
-    else if( startAddress >= 10001 && startAddress <= 20000 )
+    else if( startAddress >= 10000 && startAddress < 20000 )
     {
         pMemory = m_InputBits;
         m_LastTsInputBits = QDateTime::currentDateTime();
     }
-    else if( startAddress >= 1 && startAddress <= 10000 )
+    else if( startAddress >= 0 && startAddress < 10000 )
     {
         pMemory = m_Coils;
         m_LastTsCoils = QDateTime::currentDateTime();
@@ -66,28 +66,28 @@ bool ModbusMemory::GetValues( int startAddress, int count, QVector<quint16> &val
 {
     quint16 *pMemory;
 
-    if( startAddress >= 40001 )
+    if( startAddress >= 40000 )
     {
         if( m_LastTsHoldingRegisters.secsTo( QDateTime::currentDateTime()) > ExpirationSecs )
             return false;
 
         pMemory = m_HoldingRegisters;
     }
-    else if( startAddress >= 30001 )
+    else if( startAddress >= 30000 )
     {
         if( m_LastTsInputRegisters.secsTo( QDateTime::currentDateTime()) > ExpirationSecs )
             return false;
 
         pMemory = m_InputRegisters;
     }
-    else if( startAddress >= 10001 && startAddress <= 20000 )
+    else if( startAddress >= 10000 && startAddress < 20000 )
     {
         if( m_LastTsInputBits.secsTo( QDateTime::currentDateTime()) > ExpirationSecs )
             return false;
 
         pMemory = m_InputBits;
     }
-    else if( startAddress >= 1 && startAddress <= 10000 )
+    else if( startAddress >= 0 && startAddress < 10000 )
     {
         if( m_LastTsCoils.secsTo( QDateTime::currentDateTime()) > ExpirationSecs )
             return false;

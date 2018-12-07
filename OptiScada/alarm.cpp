@@ -28,12 +28,18 @@ Alarm::~Alarm()
 
 void Alarm::SetOn()
 {
+    if( m_IsOn)
+        return;
+
     m_IsOn = true;
     m_OnTs = QDateTime::currentDateTime();
 }
 
 void Alarm::SetOff()
 {
+    if( !m_IsOn )
+        return;
+
     m_IsOn = false;
     m_OnTs = QDateTime();
 }

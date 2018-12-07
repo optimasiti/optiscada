@@ -65,6 +65,29 @@ bool ScadaBuilder::BuildScada( QString configPath )
 
 void ScadaBuilder::ShutdownScada()
 {
+    if( m_pAlarmsManager )
+    {
+        m_pAlarmsManager->Finish();
+
+        while( !m_pAlarmsManager->get_Finished())
+        {
+            QThread::usleep(50000);
+            QCoreApplication::processEvents();
+        }
+
+        delete m_pAlarmsManager;
+        m_pAlarmsManager = nullptr;
+    }
+
+    if( m_pAlarms != nullptr )
+    {
+        for( int i = 0; i < m_pAlarms->size(); i++ )
+            delete m_pAlarms->at(i);
+
+        delete m_pAlarms;
+        m_pAlarms = nullptr;
+    }
+
     if( m_pTags )
     {
         for( int i = 0; i < m_pTags->size(); i++)
@@ -93,24 +116,6 @@ void ScadaBuilder::ShutdownScada()
         m_pDevices = nullptr;
     }
 
-    if( m_pAlarmsManager )
-    {
-        m_pAlarmsManager->Finish();
-
-        while( !m_pAlarmsManager->get_Finished())
-        {
-            QThread::usleep(50000);
-            QCoreApplication::processEvents();
-        }
-    }
-
-    if( m_pAlarms != nullptr )
-    {
-        for( int i = 0; i < m_pAlarms->size(); i++ )
-            delete m_pAlarms->at(i);
-
-        delete m_pAlarms;
-    }
 }
 
 bool ScadaBuilder::LoadDevices( QString fileName )
@@ -176,6 +181,12 @@ bool ScadaBuilder::LoadTags( QString fileName )
         quint16 rawMax = tag.toObject().value("raw_max").toInt();
         double engMin = tag.toObject().value("eng_min").toDouble();
         double engMax = tag.toObject().value("eng_max").toDouble();
+
+        if( FindTag( id ) )
+        {
+            Log::AddLog( Log::Critical, QString( "Tag id %1 already defined").arg(id));
+            return false;
+        }
 
         TagScada *pTag;
         DeviceModbusEthernet *pDevice = FindDevice( deviceId );

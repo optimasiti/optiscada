@@ -15,13 +15,13 @@ void ModbusCommon::ModbusReadData( QModbusClient *pModbusClient, int deviceNumbe
 {
     QModbusDataUnit::RegisterType registerType;
 
-    if( startAddress >= 40001 )
+    if( startAddress >= 40000 )
         registerType = QModbusDataUnit::HoldingRegisters;
-    else if( startAddress >= 30001 )
+    else if( startAddress >= 30000 )
         registerType = QModbusDataUnit::InputRegisters;
-    else if( startAddress >= 10001 && startAddress <= 20000 )
+    else if( startAddress >= 10000 && startAddress < 20000 )
         registerType = QModbusDataUnit::DiscreteInputs;
-    else if( startAddress >= 1 && startAddress <= 10000)
+    else if( startAddress >= 0 && startAddress < 10000)
         registerType = QModbusDataUnit::Coils;
     else
     {
@@ -61,9 +61,9 @@ void ModbusCommon::ModbusReadData( QModbusClient *pModbusClient, int deviceNumbe
 
 void ModbusCommon::ModbusWriteData(QModbusClient *pModbusClient, int deviceNumber, int startAddress, QVector<quint16> &values, ModbusMemory *pMemory )
 {
-    if( startAddress >= 40001 )
+    if( startAddress >= 40000 )
         ModbusWriteWords( pModbusClient, deviceNumber, startAddress, values, pMemory );
-    else if (startAddress >= 1 && startAddress <= 10000 )
+    else if (startAddress >= 0 && startAddress < 10000 )
     {
         QVector<bool> bitsValues;
         for( int i = 0; i < values.size(); i++ )

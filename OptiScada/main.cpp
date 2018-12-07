@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     for( int i = 0; i < scadaCore.get_Tags()->size(); i++ )
         tags.append( scadaCore.get_Tags()->at(i));
 
-    MainWindow w( tags );
+    MainWindow w( tags, scadaCore.get_AlarmsManager() );
     w.show();
 
     return a.exec();
