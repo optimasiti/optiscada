@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     scadabuilder.cpp \
     alarm.cpp \
     alarmsp.cpp \
-    alarmsmanager.cpp
+    alarmsmanager.cpp \
+    historical.cpp
 
 HEADERS  += mainwindow.h \
     tagscada.h \
@@ -37,6 +38,7 @@ HEADERS  += mainwindow.h \
     scadabuilder.h \
     alarm.h \
     alarmsp.h \
-    alarmsmanager.h
+    alarmsmanager.h \
+    historical.h
 
 FORMS    += mainwindow.ui
