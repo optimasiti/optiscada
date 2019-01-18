@@ -8,7 +8,8 @@
 			"raw_min": 0,
 			"raw_max": 1000,
 			"eng_min": 0,
-			"eng_max": 100
+			"eng_max": 100,
+			"historical_freq_secs": 1
 		},
 		{
 			"id": 2,

@@ -29,9 +29,9 @@ ScadaCore::~ScadaCore()
 
 bool ScadaCore::Start()
 {
-    QString fileName = QDir::currentPath() + ConfigFolder;
+    QString configFolder = QDir::currentPath() + ConfigFolder;
 
-    return ScadaBuilder::BuildScada( fileName );
+    return ScadaBuilder::BuildScada( configFolder );
 }
 
 

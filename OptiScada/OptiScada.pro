@@ -25,7 +25,9 @@ SOURCES += main.cpp\
     alarm.cpp \
     alarmsp.cpp \
     alarmsmanager.cpp \
-    historical.cpp
+    historical.cpp \
+    taghistorical.cpp \
+    filestream.cpp
 
 HEADERS  += mainwindow.h \
     tagscada.h \
@@ -39,6 +41,8 @@ HEADERS  += mainwindow.h \
     alarm.h \
     alarmsp.h \
     alarmsmanager.h \
-    historical.h
+    historical.h \
+    taghistorical.h \
+    filestream.h
 
 FORMS    += mainwindow.ui

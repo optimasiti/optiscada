@@ -1,10 +1,15 @@
 #ifndef HISTORICAL_H
 #define HISTORICAL_H
 
+#include "filestream.h"
+
 #include <QObject>
 #include <QList>
+#include <QFile>
 
-class TagScada;
+
+class TagHistorical;
+
 
 class Historical : public QObject
 {
@@ -13,20 +18,24 @@ class Historical : public QObject
 public:
     bool get_Finished();
 
-    Historical( QList<TagScada*> *pTags );
+    Historical( QList<TagHistorical*> *pTagsHistorical );
     void Finish();
 
 public slots:
     void execBody();
 
 private:
-    static const int SavePeriodSecs;
+    static const int FlushPeriodSecs;
 
-    QList<TagScada*> *m_pTags;
+    QList<TagHistorical*> *m_pTagsHistorical;
     bool m_Finish;
     bool m_Finished;
+    QList<FileStream*> m_Files;
 
-    void SaveToDatabase( TagScada *pTag );
+    void TrateSaveToDatabase( TagHistorical *pTag );
+    bool SaveToDatabase( TagHistorical *pTag );
+    void CreateFiles();
+    void CloseFiles();
 };
 
 #endif // HISTORICAL_H

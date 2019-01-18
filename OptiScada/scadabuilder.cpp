@@ -5,6 +5,8 @@
 #include "tagscada.h"
 #include "alarmsmanager.h"
 #include "alarmsp.h"
+#include "taghistorical.h"
+#include "historical.h"
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -20,12 +22,14 @@ const int ScadaBuilder::DefaultPort = 502;
 const QString ScadaBuilder::DeviceFileName = "devices.txt";
 const QString ScadaBuilder::TagsFileName = "tags.txt";
 const QString ScadaBuilder::AlarmsFileName = "alarms.txt";
+const QString ScadaBuilder::HistoricalPath = "/../historical";
 
 QList<DeviceModbusEthernet*> *ScadaBuilder::m_pDevices = nullptr;
 QList<TagScada*> *ScadaBuilder::m_pTags = nullptr;
+QList<TagHistorical*> *ScadaBuilder::m_pTagsHistorical = nullptr;
 QList<Alarm*> *ScadaBuilder::m_pAlarms = nullptr;
 AlarmsManager* ScadaBuilder::m_pAlarmsManager = nullptr;
-
+Historical* ScadaBuilder::m_pHistorical = nullptr;
 
 QList<DeviceModbusEthernet*> *ScadaBuilder::get_Devices()
 {
@@ -55,6 +59,7 @@ bool ScadaBuilder::BuildScada( QString configPath )
             {
                 StartRefreshDevices();
                 StartAlarmsManager();
+                StartHistorical();
                 return true;
             }
         }
@@ -170,6 +175,7 @@ bool ScadaBuilder::LoadTags( QString fileName )
     }
 
     m_pTags = new QList<TagScada*>();
+    m_pTagsHistorical = new QList<TagHistorical*>();
 
     foreach( tag, tags )
     {
@@ -181,6 +187,7 @@ bool ScadaBuilder::LoadTags( QString fileName )
         quint16 rawMax = tag.toObject().value("raw_max").toInt();
         double engMin = tag.toObject().value("eng_min").toDouble();
         double engMax = tag.toObject().value("eng_max").toDouble();
+        int historicalFreqSecs = tag.toObject().value("historical_freq_secs").toInt(0);
 
         if( FindTag( id ) )
         {
@@ -217,7 +224,13 @@ bool ScadaBuilder::LoadTags( QString fileName )
         }
 
         m_pTags->append( pTag );
+
+        if( historicalFreqSecs > 0 )
+            m_pTagsHistorical->append( new TagHistorical( pTag, historicalFreqSecs ) );
     }
+
+    if( m_pTagsHistorical->length() > 0 )
+        m_pHistorical = new Historical( m_pTagsHistorical, HistoricalPath );
 
     return true;
 }
@@ -329,6 +342,17 @@ void ScadaBuilder::StartAlarmsManager()
     QThread *pThread = new QThread();
     m_pAlarmsManager->moveToThread( pThread );
     QObject::connect(pThread, SIGNAL (started()), m_pAlarmsManager, SLOT (evaluatePool()));
+    pThread->start();
+}
+
+void ScadaBuilder::StartHistorical()
+{
+    if( !m_pHistorical )
+        return;
+
+    QThread *pThread = new QThread();
+    m_pHistorical->moveToThread( pThread );
+    QObject::connect(pThread, SIGNAL (started()), m_pHistorical, SLOT (execBody()));
     pThread->start();
 }
 
