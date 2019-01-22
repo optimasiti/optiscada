@@ -16,11 +16,12 @@ bool Historical::get_Finished()
     return m_Finished;
 }
 
-Historical::Historical( QList<TagHistorical*> *pTagsHistorical )
+Historical::Historical( QList<TagHistorical*> *pTagsHistorical, QString path )
 {
     m_pTagsHistorical = pTagsHistorical;
     m_Finish = false;
     m_Finished = false;
+    m_Path = path;
 }
 
 void Historical::Finish()
@@ -68,7 +69,7 @@ void Historical::CreateFiles()
 {
     for( int i = 0; i < m_pTagsHistorical->length(); i++ )
     {
-        QFile *pFile = new QFile( QString("%1_%2.txt").arg(m_pTagsHistorical->at(i)->get_TagScada()->get_Name()).arg(QDateTime::currentDateTime().toString("yyyy-MM-dd")));
+        QFile *pFile = new QFile( m_Path + QString("/%1_%2.txt").arg(m_pTagsHistorical->at(i)->get_TagScada()->get_Name()).arg(QDateTime::currentDateTime().toString("yyyy-MM-dd")));
         pFile->open( QIODevice::ReadWrite | QIODevice::Text );
         QTextStream *pStream = new QTextStream( pFile );
         m_Files.append( new FileStream( m_pTagsHistorical->at(i)->get_TagScada()->get_Id(), pFile, pStream ) );

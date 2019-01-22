@@ -18,7 +18,7 @@ class Historical : public QObject
 public:
     bool get_Finished();
 
-    Historical( QList<TagHistorical*> *pTagsHistorical );
+    Historical( QList<TagHistorical*> *pTagsHistorical, QString path );
     void Finish();
 
 public slots:
@@ -31,6 +31,7 @@ private:
     bool m_Finish;
     bool m_Finished;
     QList<FileStream*> m_Files;
+    QString m_Path;
 
     void TrateSaveToDatabase( TagHistorical *pTag );
     bool SaveToDatabase( TagHistorical *pTag );
