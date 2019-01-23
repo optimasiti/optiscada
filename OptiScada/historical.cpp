@@ -86,31 +86,45 @@ void Historical::CloseFiles()
     }
 }
 
-void Historical::TrateSaveToDatabase( TagHistorical *pTagHistorical )
+
+void Historical::TrateSave( TagHistorical *pTagHistorical )
 {
     if( !pTagHistorical->get_LastSave().isValid() || pTagHistorical->get_LastSave().secsTo( QDateTime::currentDateTime()) >= pTagHistorical->get_FrequencySecs() )
     {
-        if(SaveToDatabase( pTagHistorical ))
-            pTagHistorical->SetLastSave();
+        double value;
+
+        if( pTagHistorical->get_TagScada()->GetValue( value ) )
+        {
+            int i;
+
+            for( i = 0; i < m_Files.length(); i++ )
+                if( m_Files.at(i)->get_Id() == m_pTagsHistorical->at(i)->get_TagScada()->get_Id())
+                    break;
+
+            if( m_pTagsHistorical->at(i)->get_TagScada()->GetValue( value ) )
+            {
+                SaveToCSV( value );
+                SaveToInfluxDB( value );
+                pTagHistorical->SetLastSave();
+            }
+        }
     }
 
     return;
 }
 
-bool Historical::SaveToDatabase( TagHistorical *pTag )
+void Historical::SaveToInfluxDB(double value)
 {
-    double value;
 
-    if( !pTag->get_TagScada()->GetValue( value ) )
-        return false;
+}
 
+void Historical::SaveToCSV( double value, int tagId )
+{
     int i;
 
     for( i = 0; i < m_Files.length(); i++ )
-        if( m_Files.at(i)->get_Id() == m_pTagsHistorical->at(i)->get_TagScada()->get_Id())
+        if( m_Files.at(i)->get_Id() == tagId )
             break;
 
     *(m_Files.at(i)->get_pStream())<<QString("%1;%2").arg( QDateTime::currentDateTime().toString("yyyy-mm-ddThh:mm:ss")).arg(value )<<endl;
-
-    return true;
 }

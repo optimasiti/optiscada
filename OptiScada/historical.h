@@ -33,8 +33,9 @@ private:
     QList<FileStream*> m_Files;
     QString m_Path;
 
-    void TrateSaveToDatabase( TagHistorical *pTag );
-    bool SaveToDatabase( TagHistorical *pTag );
+    void TrateSave( TagHistorical *pTag );
+    void SaveToInfluxDB( double value );
+    void SaveToCSV( double value, int tagId );
     void CreateFiles();
     void CloseFiles();
 };
