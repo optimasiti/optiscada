@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui serialbus network serialport
+QT       += core gui serialbus network serialport sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,7 +24,10 @@ SOURCES += main.cpp\
     scadabuilder.cpp \
     alarm.cpp \
     alarmsp.cpp \
-    alarmsmanager.cpp
+    alarmsmanager.cpp \
+    historical.cpp \
+    taghistorical.cpp \
+    filestream.cpp
 
 HEADERS  += mainwindow.h \
     tagscada.h \
@@ -37,6 +40,9 @@ HEADERS  += mainwindow.h \
     scadabuilder.h \
     alarm.h \
     alarmsp.h \
-    alarmsmanager.h
+    alarmsmanager.h \
+    historical.h \
+    taghistorical.h \
+    filestream.h
 
 FORMS    += mainwindow.ui
