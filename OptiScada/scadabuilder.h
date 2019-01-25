@@ -48,7 +48,7 @@ private:
     static TagScada* FindTag( int tagId );
     static void StartRefreshDevices();
     static void StartAlarmsManager();
-    static void StartHistorical();
+    static bool StartHistorical();
 
 };
 

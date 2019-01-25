@@ -15,6 +15,7 @@
 #include <QThread>
 #include <QDateTime>
 #include <QCoreApplication>
+#include <QDir>
 
 const QString ScadaBuilder::NotFoundString = "";
 const int ScadaBuilder::DefaultTimeOutMs = 2000;
@@ -22,7 +23,7 @@ const int ScadaBuilder::DefaultPort = 502;
 const QString ScadaBuilder::DeviceFileName = "devices.txt";
 const QString ScadaBuilder::TagsFileName = "tags.txt";
 const QString ScadaBuilder::AlarmsFileName = "alarms.txt";
-const QString ScadaBuilder::HistoricalPath = "/../historical";
+const QString ScadaBuilder::HistoricalPath = QDir::currentPath() + "/../historical";
 
 QList<DeviceModbusEthernet*> *ScadaBuilder::m_pDevices = nullptr;
 QList<TagScada*> *ScadaBuilder::m_pTags = nullptr;
@@ -59,7 +60,10 @@ bool ScadaBuilder::BuildScada( QString configPath )
             {
                 StartRefreshDevices();
                 StartAlarmsManager();
-                StartHistorical();
+
+                if(!StartHistorical() )
+                    return false;
+
                 return true;
             }
         }
@@ -345,15 +349,20 @@ void ScadaBuilder::StartAlarmsManager()
     pThread->start();
 }
 
-void ScadaBuilder::StartHistorical()
+bool ScadaBuilder::StartHistorical()
 {
     if( !m_pHistorical )
-        return;
+        return true;
+
+    if( !m_pHistorical->CreateFiles() )
+        return false;
 
     QThread *pThread = new QThread();
     m_pHistorical->moveToThread( pThread );
     QObject::connect(pThread, SIGNAL (started()), m_pHistorical, SLOT (execBody()));
     pThread->start();
+
+    return true;
 }
 
 DeviceModbusEthernet* ScadaBuilder::FindDevice( int deviceId )

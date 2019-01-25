@@ -20,6 +20,7 @@ public:
 
     Historical( QList<TagHistorical*> *pTagsHistorical, QString path );
     void Finish();
+    bool CreateFiles();
 
 public slots:
     void execBody();
@@ -34,9 +35,7 @@ private:
     QString m_Path;
 
     void TrateSave( TagHistorical *pTag );
-    void SaveToInfluxDB( double value );
-    void SaveToCSV( double value, int tagId );
-    void CreateFiles();
+    void SaveToCSV( double value, QTextStream *pTextStream );
     void CloseFiles();
 };
 

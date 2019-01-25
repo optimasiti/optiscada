@@ -1,15 +1,16 @@
 #include "historical.h"
 #include "tagscada.h"
 #include "taghistorical.h"
+#include "log.h"
 
 #include <QDateTime>
 #include <QThread>
 #include <QCoreApplication>
 #include <QSqlQuery>
+#include <QTextStream>
+#include <QDir>
 
-#include <QDebug> //TODO
-
-const int Historical::FlushPeriodSecs = 2;
+const int Historical::FlushPeriodSecs = 5;
 
 bool Historical::get_Finished()
 {
@@ -31,9 +32,11 @@ void Historical::Finish()
 
 void Historical::execBody()
 {
-    CreateFiles();
-
-    int i = 0;
+    if( m_Files.length() == 0 )
+    {
+        m_Finished = true;
+        return;
+    }
 
     QDateTime nextFlush = QDateTime::currentDateTime().addSecs( FlushPeriodSecs );
 
@@ -50,14 +53,11 @@ void Historical::execBody()
             nextFlush = QDateTime::currentDateTime().addSecs( FlushPeriodSecs );
         }
 
-//        while( QDateTime::currentDateTime() < e )
-        {
-            QThread::usleep(50000);
-            QCoreApplication::processEvents();
-        }
+        QThread::usleep(50000);
+        QCoreApplication::processEvents();
 
         for( int i = 0; i < m_pTagsHistorical->size(); i++ )
-            TrateSaveToDatabase( m_pTagsHistorical->at(i) );
+            TrateSave( m_pTagsHistorical->at(i) );
     }
 
     CloseFiles();
@@ -65,15 +65,27 @@ void Historical::execBody()
     m_Finished = true;
 }
 
-void Historical::CreateFiles()
+bool Historical::CreateFiles()
 {
+    if( !QDir(m_Path).exists() )
+        QDir().mkdir( m_Path );
+
     for( int i = 0; i < m_pTagsHistorical->length(); i++ )
     {
-        QFile *pFile = new QFile( m_Path + QString("/%1_%2.txt").arg(m_pTagsHistorical->at(i)->get_TagScada()->get_Name()).arg(QDateTime::currentDateTime().toString("yyyy-MM-dd")));
-        pFile->open( QIODevice::ReadWrite | QIODevice::Text );
+        QString fileName = m_Path + QString("/%1_%2.txt").arg(m_pTagsHistorical->at(i)->get_TagScada()->get_Name()).arg(QDateTime::currentDateTime().toString("yyyy-MM-ddThhmmss"));
+        QFile *pFile = new QFile( fileName );
+
+        if( !pFile->open( QIODevice::ReadWrite | QIODevice::Text ) )
+        {
+            Log::AddLog( Log::Critical, QString( "Error creating historical file %1").arg( fileName ));
+            return false;
+        }
+
         QTextStream *pStream = new QTextStream( pFile );
         m_Files.append( new FileStream( m_pTagsHistorical->at(i)->get_TagScada()->get_Id(), pFile, pStream ) );
     }
+
+    return true;
 }
 
 void Historical::CloseFiles()
@@ -85,7 +97,6 @@ void Historical::CloseFiles()
         delete m_Files.at(i)->get_pFile();
     }
 }
-
 
 void Historical::TrateSave( TagHistorical *pTagHistorical )
 {
@@ -103,28 +114,15 @@ void Historical::TrateSave( TagHistorical *pTagHistorical )
 
             if( m_pTagsHistorical->at(i)->get_TagScada()->GetValue( value ) )
             {
-                SaveToCSV( value );
-                SaveToInfluxDB( value );
+                SaveToCSV( value, m_Files.at(i)->get_pStream() );
                 pTagHistorical->SetLastSave();
             }
         }
     }
-
-    return;
 }
 
-void Historical::SaveToInfluxDB(double value)
+
+void Historical::SaveToCSV( double value, QTextStream *pTextStream )
 {
-
-}
-
-void Historical::SaveToCSV( double value, int tagId )
-{
-    int i;
-
-    for( i = 0; i < m_Files.length(); i++ )
-        if( m_Files.at(i)->get_Id() == tagId )
-            break;
-
-    *(m_Files.at(i)->get_pStream())<<QString("%1;%2").arg( QDateTime::currentDateTime().toString("yyyy-mm-ddThh:mm:ss")).arg(value )<<endl;
+    *(pTextStream)<<QString("%1;%2").arg( QDateTime::currentDateTime().toString("yyyy-mm-ddThh:mm:ss")).arg(value )<<endl;
 }
