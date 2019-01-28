@@ -9,10 +9,10 @@ Used in a serie of blog entries showing a possible architecture of a Scada.
 - Send user values to automats.
 - Read configuration from json files.
 - Implement alarms.
-- Implement historic.
+
 
 ### TODO
 - Generate a runtime executable for Windows (Mac & linux if it is demanded).
-
+- Implement historic.
 
 Blog: https://optimasiti.com/es/category/optiscada/
