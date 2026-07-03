@@ -15,4 +15,4 @@ Used in a serie of blog entries showing a possible architecture of a Scada.
 - Generate a runtime executable for Windows (Mac & linux if it is demanded).
 - Implement historic.
 
-Blog: https://optimasiti.com/es/category/optiscada/
+Blog: [https://optimasiti.com/es/category/optiscada/](https://optimasiti.com/)
